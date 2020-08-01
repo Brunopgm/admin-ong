@@ -1,7 +1,5 @@
-<template>
-    
-      
-        <v-list
+<template>  
+     <v-list
           dense
           nav
           class="py-0"
@@ -34,16 +32,12 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-     
-
 </template>
 
 <script>
   export default {
-    props:['menuStatus'],
     data () {
       return {
-        widthInitial: screen.width,
         drawer: null,
         items: [
           { title: 'Cabeçalho', icon: 'mdi-page-layout-header', to: '/header' },
@@ -52,16 +46,5 @@
         ],        
       }
     },
-    // watch:{
-    //   menuStatus(){
-    //     this.drawer = !this.drawer
-        
-    //   }
-    // }
   }
 </script>
-
-<style scoped>
-  
-
-</style>

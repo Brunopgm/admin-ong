@@ -36,9 +36,4 @@ export default {
 .button-menu::after{
     background-color: transparent;
 }
-
-@media(min-width: 960px){
-    
-}
-
 </style>
