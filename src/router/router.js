@@ -15,6 +15,11 @@ const router = new Router({
       path: "/home",     
       name: "Home",
       component: Home
+    },
+    {
+      path: "/cabecalho",     
+      name: "Header",
+      // component: Header
     }
     
   ]

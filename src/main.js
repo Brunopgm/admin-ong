@@ -2,8 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from '@/router/router.js'
 import vuetify from './plugins/vuetify';
-// import * as admin from 'firebase-admin'
+import '@mdi/font/css/materialdesignicons.css'
+import Vuetify from 'vuetify/lib'
 
+
+// import * as admin from 'firebase-admin'
+Vue.use(vuetify)
 Vue.config.productionTip = false
 // var serviceAccount = require("../ong-proximo-firebase-adminsdk-dsdwf-dfb83fe7e5.json");
 
@@ -17,6 +21,13 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
+
+export default new Vuetify({
+  icons: {
+    iconfont: 'mdi', 
+  },
+})
 
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
