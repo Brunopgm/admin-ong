@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@firebase/app": "^0.6.7",
+    "@mdi/js": "^5.4.55",
     "core-js": "^3.6.5",
     "dns": "^0.2.2",
     "firebase": "^7.15.5",
@@ -19,6 +20,7 @@
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
+    "@mdi/font": "^5.4.55",
     "@vue/cli-plugin-babel": "^4.4.0",
     "@vue/cli-plugin-eslint": "^4.4.0",
     "@vue/cli-service": "^4.4.0",

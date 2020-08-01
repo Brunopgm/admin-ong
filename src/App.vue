@@ -1,39 +1,44 @@
 <template>
-    <div class="app">
-      <Menu :open="openMenu"></Menu>
-      <Content @open="openMenu = $event"></Content>
-    </div>
+<v-app>
+  <v-navigation-drawer v-model="drawer" app dark>
+      <Menu/>
+  </v-navigation-drawer>
+  
+     <v-app-bar
+      app
+      color="grey darken-3"
+      dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
+
+  <v-main>
+    <v-container fluid>
+      <router-view>
+        <!-- home - / -->
+        <!-- Header - /cabecalho -->
+        <!-- Home - /home -->
+      </router-view>
+    </v-container>
+  </v-main>
+
+  <v-footer app/>
+
+</v-app>
 </template>
 
 <script>
 import Menu from './components/Menu.vue';
-import Content from './components/Content.vue';
+
 
 export default {
   data(){
     return{
-      openMenu: false
+      drawer: null,
     }
   },
   components: {
     Menu,
-    Content
   }
-};
+}
 </script>
 
-<style scoped>
-  
-  .app{
-    
-    
-  }
-
-  @media(min-width: 960px){
-      .app{
-        display: flex;
-        
-
-      }  
-    }
-</style>
