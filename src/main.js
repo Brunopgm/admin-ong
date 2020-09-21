@@ -16,6 +16,8 @@ Vue.config.productionTip = false
 //   // databaseURL: "https://ong-proximo.firebaseio.com"
 // });
 
+
+
 new Vue({
   router,
   vuetify,
@@ -41,3 +43,9 @@ export default new Vuetify({
 //   // Your web app's Firebase configuration
 
 // </script>
+
+
+
+
+//Storage para arquivos de mídia
+//Clould firestore para dados
