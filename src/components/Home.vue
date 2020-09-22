@@ -1,7 +1,10 @@
-
-
 <template>
-    <div><p>Olá mundo</p></div>
+    <div class="home">
+        <div class="salutation">
+            <h1>Admin Ong Próximo</h1>
+            <span>Seja bem-vindo!</span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -11,12 +14,13 @@ import FirebaseApp from "../firebaseConfig"
 export default {
     created() {
         console.log(FirebaseApp)
-        const menu = [{title: 'Home', url: '/home'},{title: 'Sobre nós', url: 'about'}]
-        const create = async () => {
-            await FirebaseApp.db.collection("home").doc("menu").set({menu}).then(response => {
-                console.log('create', response)
-            })
-        }
+        // const menu = [
+        //     {title: 'Home', url: '/home'},
+        //     {title: 'Sobre nós', url: '/sobre'},
+        //     {title: 'Projetos e ações', url: '/projetos-acoes'},
+        //     {title: 'Voluntários', url: '/voluntarios'},
+        //     {title: 'Sobre nós', url: '/contatos'}]
+        
 
         //  const update = async () => {
         //     await FirebaseApp.db.collection("users").doc('2NZePxJ7KU9UF9LD8UPt').set({name: 'BB'}).then(response => {
@@ -24,19 +28,10 @@ export default {
         //     })
         // }
 
-        const read = async () => {
-            await FirebaseApp.db.collection("home").doc('menu').get().then(response => {
-                const { menu } = response.data()
-                console.log(menu)
-                // response?.forEach(element => {
-                //     const user = element?.data()
-                //     console.log(user)
-                // });
-            })
-        }
+        
 
-        create()
-        read()
+        // create()
+        // read()
         // update()
         // remove()
 
@@ -48,5 +43,16 @@ export default {
 </script>
 
 <style>
+    .home{
+        height: 100%;
+        
+    }
+
+    .salutation{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        
+    }
 
 </style>
