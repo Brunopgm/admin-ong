@@ -3,7 +3,7 @@
         <h3 class="subtitle">Modificar link e nome das abas</h3>
         <v-data-table
             :headers="headers"
-            :items="desserts"
+            :items="tabsMenu"
             class="elevation-1"
             hide-default-footer
             disable-sort
@@ -74,7 +74,7 @@
         { text: 'URL do campo', value: 'url',width: 300 },
         { text: 'Editar', value: 'actions', sortable: false, width: 100 },
       ],
-      desserts: [],
+      tabsMenu: [],
       editedIndex: -1,
       editedItem: {
         description: '',
@@ -99,11 +99,11 @@
     methods: {
       async initialize () {
         const response = await read()
-        this.desserts = response.menu
+        this.tabsMenu = response.menu
       },
 
       editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.tabsMenu.indexOf(item)
         this.editedItem = {...item}
         // Object.assign({}, item)
         this.dialog = true
@@ -118,9 +118,9 @@
       },
 
       async save () {
-        // this.desserts[this.editedIndex] = this.editedItem
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        await create(this.desserts)
+        // this.tabsMenu[this.editedIndex] = this.editedItem
+        Object.assign(this.tabsMenu[this.editedIndex], this.editedItem)
+        await create(this.tabsMenu)
         this.close()
       },
     },

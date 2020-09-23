@@ -5,7 +5,6 @@ import vuetify from './plugins/vuetify';
 import '@mdi/font/css/materialdesignicons.css'
 import Vuetify from 'vuetify/lib'
 
-
 // import * as admin from 'firebase-admin'
 Vue.use(vuetify)
 Vue.config.productionTip = false
@@ -15,8 +14,6 @@ Vue.config.productionTip = false
 //   credential: admin.credential.cert(serviceAccount),
 //   // databaseURL: "https://ong-proximo.firebaseio.com"
 // });
-
-
 
 new Vue({
   router,
@@ -30,7 +27,6 @@ export default new Vuetify({
     iconfont: 'mdi', 
   },
 })
-
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
 // <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
