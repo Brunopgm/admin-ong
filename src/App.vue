@@ -1,5 +1,4 @@
 <template>
-
   <v-app>
     <v-navigation-drawer v-model="drawer" app dark>
         <Menu/>
@@ -13,22 +12,15 @@
       </v-app-bar>
 
     <v-main class="main">
-      <!-- <v-container fluid> -->
-        <router-view>
-        
-        </router-view>
-      <!-- </v-container> -->
+        <router-view/>
     </v-main>
 
     <v-footer app/>
-
   </v-app>
-
 </template>
 
 <script>
 import Menu from './components/Menu.vue';
-
 export default {
   data(){
     return{

@@ -3,6 +3,7 @@ import Router from "vue-router"
 import Home from "@/components/Home.vue"
 
 import Header from "@/components/header/Header.vue"
+import Preview from '@/components/header/Preview.vue'
 
 
 Vue.use(Router);
@@ -17,7 +18,11 @@ const router = new Router({
     {
       path: "/cabecalho",     
       name: "header",
-      component:Header
+      component:Header,
+      children: [
+        {path: 'preview', component: Preview},
+        
+      ]
     },
     {
       path: "/rodape",     

@@ -40,8 +40,8 @@
       return {
         drawer: null,
         items: [
-          { title: 'Cabeçalho', icon: 'mdi-page-layout-header', to:'cabecalho' },
-          { title: 'Rodapé', icon: 'mdi-page-layout-footer', to:'rodape' },
+          { title: 'Cabeçalho', icon: 'mdi-page-layout-header', to:'/cabecalho' },
+          { title: 'Rodapé', icon: 'mdi-page-layout-footer', to:'/rodape' },
           { title: 'Conteúdo das páginas', icon: 'mdi-newspaper-variant-multiple' },
         ],        
       }

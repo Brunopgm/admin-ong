@@ -9,8 +9,6 @@
 
 <script>
 import FirebaseApp from "../firebaseConfig"
-
-
 export default {
     created() {
         console.log(FirebaseApp)
@@ -28,16 +26,11 @@ export default {
         //     })
         // }
 
-        
-
         // create()
         // read()
         // update()
         // remove()
-
-
     }
-
 }
 
 </script>
@@ -45,14 +38,11 @@ export default {
 <style>
     .home{
         height: 100%;
-        
     }
 
     .salutation{
         text-align: center;
         display: flex;
         flex-direction: column;
-        
     }
-
 </style>
