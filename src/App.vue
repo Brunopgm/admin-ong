@@ -35,7 +35,7 @@ export default {
 
 <style>
 .body, html{
-  font-size: 16px;
+  font-size: 19px;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
@@ -43,5 +43,11 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 1rem;
+}
+
+@media(min-width: 960px){
+  .main{
+    margin: 1.7rem;
+  }
 }
 </style>
