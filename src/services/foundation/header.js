@@ -1,17 +1,32 @@
 import FirebaseApp from "@/firebaseConfig"
+import firebase from "firebase"
+
+const storageReference = firebase.storage().ref()
+
+export const uploadFile = async (selectedFile, logoHeader) => {
+    const referenceFile = storageReference.child(`header/${logoHeader}`)
+    await referenceFile.put(selectedFile)
+}
+
+export const downloadFile = (path) => {
+    return storageReference.child(path).getDownloadURL().then(url => {
+        return url
+    }
+    )
+}
 
 export const create = async (menu) => {
     await FirebaseApp.db.collection("foundation").doc("header").set({menu}).then(response => {
-        console.log('create', response)
-    })
-    
+        response
+    })  
 }
 
-// export const update = async () => {
-//             await FirebaseApp.db.collection("foundation").doc('header').set({}).then(response => {
-//                 console.log('update', response)
-//             })
-//         }
+export const update = async () => {
+            await FirebaseApp.db.collection("foundation").doc('header').set({})
+                .then(response => {
+                console.log('update', response)
+            })
+        }
 
 export const read = async () => {
     let menu = null
