@@ -6,6 +6,8 @@
             class="elevation-1"
             hide-default-footer
             disable-sort
+            :loading='showLoading'
+            loading-text="Aguarde... os dados estão sendo carregados"
         >   
             <template v-slot:top>
             <v-toolbar flat color="grey">
@@ -38,7 +40,6 @@
                                   </v-row>
                                 </template>
 
-
                                 <template v-if="editedItem.color">
                                   <v-row>
                                     <v-col cols="12" sm="6" md="8">
@@ -56,9 +57,6 @@
                                   </v-col>
                                   </v-row>
                                 </template>
-
-
-
 
                             </v-container>
                         </v-card-text>
@@ -84,6 +82,7 @@
 
 <script>
   import { read, create } from "@/services/foundation/header"
+
   export default {
     data: () => ({
       dialog: false,
@@ -112,11 +111,12 @@
         color:'',
         background:''
       },
+      showLoading: true
     }),
     watch: {
       dialog (val) {
         val || this.close()
-      },
+      }
     },
     created () {
       this.initialize()
@@ -125,14 +125,13 @@
       async initialize () {
         const response = await read()
         this.tabsMenu = response.menu
+        this.showLoading = false
       },
 
       editItem (item) {
         this.editedIndex = this.tabsMenu.indexOf(item)
         this.editedItem = {...item}
-        // Object.assign({}, item)
         this.dialog = true
-        // console.log(this.listFieldsMenu);
       },
 
       close () {
@@ -143,7 +142,6 @@
         })
       },
       async save () {
-        // this.tabsMenu[this.editedIndex] = this.editedItem
         Object.assign(this.tabsMenu[this.editedIndex], this.editedItem)
         await create(this.tabsMenu)
         this.close()

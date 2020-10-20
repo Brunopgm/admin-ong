@@ -23,13 +23,13 @@
 <script>
 export default {
     props:{
-        readListFieldsMenu:{type: Object},
+        readListFieldsMenu:{default: ''},
         screen: {default: ''},
         logoURL: {default: ''}
     },
     data(){
         return{
-            menu: []
+            menu: [],
         }
     },
     watch:{
@@ -45,7 +45,6 @@ export default {
                     this.menu.splice(0, 1)
                     this.menu.splice(3, 0, this.logoURL)
                 }
-        
         }
     }
 }
