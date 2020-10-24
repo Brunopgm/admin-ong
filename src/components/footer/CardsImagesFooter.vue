@@ -108,9 +108,7 @@ const { mapActions, mapGetters} = createNamespacedHelpers('footerListUrlImage')
 export default {
     props:{
         image :{ type : String}, 
-        url: { 
-          type : String
-          }, 
+        url: { type : String }, 
         indexItem: { type : Number}
         },
     data(){
@@ -141,12 +139,14 @@ export default {
         this.pushUrlInList(this.editedItem)
       },
       fileSelected(event){
+          this.showLoading = true
           const file = event.target ? event.target.files[0] : event 
-          this.showLoading = true 
           uploadFile(file, `logo-${this.indexItem + 1}`)
             .then(()=>{
-                this.updateFile()
-                this.showLoading = false 
+              this.updateFile()
+            }).catch(()=>{
+              this.showLoading = false
+              console.log('erro');
             })
       },
       pushUrlInList(newItemUrl){
@@ -156,7 +156,6 @@ export default {
         currentListUrlImage[this.indexItem].image = newItemUrl;
         this.changeUrlList(currentListUrlImage)
       },
-      
       async updateFile(){
          await downloadFile(`footer/logo-${this.indexItem + 1}`)
           .then(urlImage => {
