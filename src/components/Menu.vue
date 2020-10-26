@@ -1,8 +1,9 @@
-<template>  
+<template>
+  
      <v-list
           dense
           nav
-          class="py-0"
+          width="307px"
           >
           <v-list-item>
             <v-list-item-avatar>
@@ -17,8 +18,9 @@
 
           <v-divider/>
 
-          <v-list-item
-            v-for="item in items"
+          <v-list>
+            <v-list-item
+            v-for="item in fields"
             :key="item.title"
             link
             :to="item.to"
@@ -31,7 +33,40 @@
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list>
+            
+            
+            <!-- <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-home</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-title>Home</v-list-item-title>
+            </v-list-item> -->
+
+            <v-list-group
+              :value="true"
+              prepend-icon="mdi-newspaper-variant-multiple"
+            >
+                <template v-slot:activator>
+                  <v-list-item-title>Corpo das páginas</v-list-item-title>
+                </template>
+
+                <v-list-item
+                    v-for="([text, icon, link], i) in subfields"
+                    :key="i"
+                    @click="goToLink(link)"
+                  >
+                    <v-list-item-icon>
+                      <v-icon v-text="icon"></v-icon>
+                    </v-list-item-icon>
+                    
+                    <v-list-item-title v-text="text" class="subtitle-text"></v-list-item-title>
+                  </v-list-item>
+
+              </v-list-group>
+          </v-list>
+        
+        </v-list> 
 </template>
 
 <script>
@@ -40,12 +75,22 @@ import { downloadFile } from '@/services/foundation/header'
     data () {
       return {
         drawer: null,
-        items: [
+        fields: [
           { title: 'Cabeçalho', icon: 'mdi-page-layout-header', to:'/cabecalho' },
           { title: 'Rodapé', icon: 'mdi-page-layout-footer', to:'/rodape' },
-          { title: 'Conteúdo das páginas', icon: 'mdi-newspaper-variant-multiple' },
         ],
-        logoUrl: ''        
+        subfields: [
+        [ 'Home', 'mdi-chevron-right', 'page-1'],
+        [ 'Nossa História', 'mdi-chevron-right', 'page-2' ],
+        [ 'Projetos e ações', 'mdi-chevron-right', 'page-3'],
+        [ 'Contato e formulários', 'mdi-chevron-right', 'page-4']
+        ],
+        logoUrl: ''
+      }
+    },
+    methods:{
+      goToLink(link){
+        this.$router.push({name:link})
       }
     },
     async created(){

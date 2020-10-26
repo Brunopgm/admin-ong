@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app dark>
+    <v-navigation-drawer v-model="drawer" app dark width="300">
         <Menu/>
     </v-navigation-drawer>
     
