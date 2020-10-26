@@ -5,8 +5,10 @@ Application created to manage and change information on the Ong Proximo website
 ## Stack
 This project use:
 
-Vue - The Progressive JavaScript Framework.
-Vuetify - Material design library.
+Vue - The Progressive JavaScript Framework
+
+Vuetify - Material design library
+
 Firebase - We use firebase as a database to store data
 
 ## Commands
