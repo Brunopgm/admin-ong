@@ -9,10 +9,8 @@ export const uploadFile = async (selectedFile, logoHeader) => {
 }
 
 export const downloadFile = (path) => {
-    return storageReference.child(path).getDownloadURL().then(url => {
-        return url
-    }
-    )
+    return storageReference.child(path).getDownloadURL()
+        .then(url => url)
 }
 
 export const create = async (menu) => {
@@ -24,7 +22,7 @@ export const create = async (menu) => {
 export const update = async () => {
             await FirebaseApp.db.collection("foundation").doc('header').set({})
                 .then(response => {
-                console.log('update', response)
+                response
             })
         }
 
@@ -32,11 +30,6 @@ export const read = async () => {
     let menu = null
     await FirebaseApp.db.collection("foundation").doc('header').get().then(response => {
         menu = response.data()
-        
-        // response?.forEach(element => {
-        //     const user = element?.data()
-        //     console.log(user)
-        // });
     })
     return menu
 }

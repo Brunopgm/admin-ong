@@ -43,6 +43,7 @@
 
 <script>
     import { uploadFile, downloadFile } from '@/services/foundation/header'
+    
     export default {
         data: () => ({
             dialog: false,
@@ -59,7 +60,7 @@
         },
         logoURL(){
             const objectLogo = { link : this.logoURL}
-            this.$emit('passarLogo', objectLogo)
+            this.$emit('logo', objectLogo)
         }
     },
         methods:{
