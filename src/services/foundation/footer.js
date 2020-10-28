@@ -14,12 +14,6 @@ export const downloadFile = (path) => {
 }
 
 
-export const create = async (menu) => {
-    await FirebaseApp.db.collection("foundation").doc("footer").set({menu}).then(response => {
-        response
-    })  
-}
-
 export const update = async () => {
     await FirebaseApp.db.collection("foundation").doc('footer').set({})
         .then(response => {
