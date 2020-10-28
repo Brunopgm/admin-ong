@@ -96,10 +96,6 @@
 
             </div>
 
-
-
-
-
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
@@ -133,10 +129,9 @@
         isEditing: null,
         model: null,
         address: {
-            street:'Rua achiles beline',
+            street:'Rua achiles',
             neighborhood: 'Padroeira',
             number: 420,
-            
             }
       }
     },

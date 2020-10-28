@@ -8,7 +8,7 @@ import Footer from "@/components/footer/Footer.vue"
 import Page1 from "@/components/page-body/page-1.vue"
 import Page2 from "@/components/page-body/page-2.vue"
 import Page3 from "@/components/page-body/page-3.vue"
-import Page4 from "@/components/page-body/page-4/page-4.vue"
+import Page4 from "@/components/page-body/page-4/page4.vue"
 import Page5 from "@/components/page-body/page-5.vue"
 
 Vue.use(Router);
@@ -46,8 +46,8 @@ const router = new Router({
       component: Page3
     },
     {
-      path: "/page-4",     
-      name: "page-4",
+      path: "/page4",     
+      name: "page4",
       component: Page4
     },
     {

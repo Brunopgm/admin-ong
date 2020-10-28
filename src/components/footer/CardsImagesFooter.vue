@@ -1,8 +1,7 @@
 <template>
     <v-card
     class="mb-5"
-    max-width="344"
-    min-width="344"
+    width="344"
     :loading='showLoading'
   > 
     <div class="container-image" :style="imageCard">
@@ -150,7 +149,7 @@ export default {
             })
       },
       pushUrlInList(newItemUrl){
-        let currentListUrlImage = this.readListUrlImage
+        const currentListUrlImage = this.readListUrlImage
         newItemUrl.url ? 
         currentListUrlImage[this.indexItem].url = newItemUrl.url: 
         currentListUrlImage[this.indexItem].image = newItemUrl;

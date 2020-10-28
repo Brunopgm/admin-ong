@@ -33,16 +33,7 @@
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-            
-            
-            <!-- <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-home</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-title>Home</v-list-item-title>
-            </v-list-item> -->
-
+          
             <v-list-group
               :value="true"
               prepend-icon="mdi-newspaper-variant-multiple"
@@ -83,7 +74,7 @@ import { downloadFile } from '@/services/foundation/header'
         [ 'Home', 'mdi-chevron-right', 'page-1'],
         [ 'Nossa História', 'mdi-chevron-right', 'page-2' ],
         [ 'Projetos e ações', 'mdi-chevron-right', 'page-3'],
-        [ 'Contato e formulários', 'mdi-chevron-right', 'page-4']
+        [ 'Contato e formulários', 'mdi-chevron-right', 'page4']
         ],
         logoUrl: ''
       }

@@ -1,7 +1,7 @@
 <template>
         <v-container fluid class="pl-0">
             <h1 class="title">Logos</h1>
-            <p>Modifique os logos de contato e e-mail</p>
+            <p>Modifique os logos de e-mail e endereço</p>
             <v-row dense class="container-images">
                 <v-col
                 v-for="card in cards"
@@ -28,6 +28,7 @@
                         label="File input"
                         hide-input
                         prepend-icon="mdi-pencil"
+                        @click="setNameFile(card.nameFile)"
                         @change="fileSelected"
                     >
                     </v-file-input>
@@ -39,30 +40,47 @@
 </template>
 
 <script>
-import { uploadFile, downloadFile } from '@/services/foundation/page-body/page-4'
- export default {
+import { createNamespacedHelpers } from 'vuex'
+import { uploadFile, read } from '@/services/foundation/page-body/page4'
+
+const { mapGetters } = createNamespacedHelpers('page4')
+export default {
     data: () => ({
+      adressIcon: null,
+      emailIcon:null,
+      nameFile:'',
       cards: [
-        { title: 'Endereço', src: 'https://firebasestorage.googleapis.com/v0/b/ong-proximo.appspot.com/o/page-body%2Fpage-4%2Femail.png?alt=media' },
-        { title: 'E-mail', src: 'https://firebasestorage.googleapis.com/v0/b/ong-proximo.appspot.com/o/page-body%2Fpage-4%2Femail.png?alt=media'},
-      ],
+        { title: 'Endereço', src: null, nameFile: 'endereco'},
+        { title: 'E-mail', src: null, nameFile: 'email' },
+      ]
     }),
+    computed:{
+      ...mapGetters({readListContact: 'readList'})
+    },
     methods:{
         fileSelected(event){
-        //   this.showLoading = true
-          const file = event.target ? event.target.files[0] : event 
-          uploadFile(file, `logo-${this.indexItem + 1}`)
+          const file = event
+          uploadFile(file, `${this.nameFile}`)
             .then(()=>{
+              console.log('Tudo ok');
               this.updateFile()
             }).catch(()=>{
-            //   this.showLoading = false;
               console.log('erro');
             })
+        },
+        setNameFile(titleFile){
+          this.nameFile = titleFile.toLowerCase();
         }
     },
     async created(){
-        const teste = await downloadFile(`page-body/page-4/endereco.png`)
-        console.log(teste);
+        const response = await read()
+        let contactIcons = null
+        response.contactData.forEach(e => {
+            contactIcons = e.contactIcons
+            this.cards[0].src = contactIcons.adressIcon
+            this.cards[1].src = contactIcons.emailIcon
+        })
+        this.$store.state.page4.readContactIcons = contactIcons
     }
   }
 </script>
