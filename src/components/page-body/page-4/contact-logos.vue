@@ -4,7 +4,7 @@
             <p>Modifique os logos de e-mail e endereço</p>
             <v-row dense class="container-images">
                 <v-col
-                v-for="card in cards"
+                v-for="(card, i) in cards"
                 :key="card.title"
                 :cols="card.flex"
                 class="flex-grow-0"
@@ -15,6 +15,7 @@
                     class="white--text align-end"
                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                     height="200px"
+                    min-width="200px"
                     width="100%"
                     >
                     <v-card-title v-text="card.title"></v-card-title>
@@ -28,7 +29,7 @@
                         label="File input"
                         hide-input
                         prepend-icon="mdi-pencil"
-                        @click="setNameFile(card.nameFile)"
+                        @click="setNameFile(card.nameFile, i)"
                         @change="fileSelected"
                     >
                     </v-file-input>
@@ -41,46 +42,53 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { uploadFile, read } from '@/services/foundation/page-body/page4'
+import { uploadFile, downloadFile } from '@/services/foundation/page-body/page4'
 
 const { mapGetters } = createNamespacedHelpers('page4')
 export default {
+    props: {
+      listContactData: {default:''}
+    },
+    watch:{
+      listContactData(){
+        this.cards[0].src = this.listContactData.contactIcons.addressIcon
+        this.cards[1].src = this.listContactData.contactIcons.emailIcon
+      }
+    },
     data: () => ({
       adressIcon: null,
       emailIcon:null,
-      nameFile:'',
+      editedNameFile:'',
+      editedFileIndex:null,
       cards: [
         { title: 'Endereço', src: null, nameFile: 'endereco'},
         { title: 'E-mail', src: null, nameFile: 'email' },
       ]
     }),
     computed:{
-      ...mapGetters({readListContact: 'readList'})
+      ...mapGetters({readContactData:'readContactInformation'})
     },
     methods:{
-        fileSelected(event){
-          const file = event
-          uploadFile(file, `${this.nameFile}`)
+        fileSelected(file){
+          uploadFile(file, `${this.editedNameFile}`)
             .then(()=>{
               console.log('Tudo ok');
               this.updateFile()
-            }).catch(()=>{
+            })
+            .catch(()=>{
               console.log('erro');
             })
         },
-        setNameFile(titleFile){
-          this.nameFile = titleFile.toLowerCase();
-        }
-    },
-    async created(){
-        const response = await read()
-        let contactIcons = null
-        response.contactData.forEach(e => {
-            contactIcons = e.contactIcons
-            this.cards[0].src = contactIcons.adressIcon
-            this.cards[1].src = contactIcons.emailIcon
-        })
-        this.$store.state.page4.readContactIcons = contactIcons
+        setNameFile(titleFile, fileIndex){
+          this.editedNameFile = titleFile.toLowerCase();
+          this.editedFileIndex = fileIndex
+        },
+        async updateFile(){
+         await downloadFile(`page-body/page-4/${this.editedNameFile}.png`)
+          .then(urlImage => {
+            this.cards[this.editedFileIndex].src = urlImage
+            })
+      },
     }
   }
 </script>

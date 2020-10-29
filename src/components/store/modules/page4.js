@@ -1,22 +1,21 @@
 export default {
     namespaced:true,
     state:{
-       readContactIcons: ['e'],
+       readContactInformation: []
     }, 
     getters:{
-        readList(state){
-            return state.readContactIcons
+        listContactInformation(state){
+            return state.readContactInformation
         }
     },
     actions:{
-        changeList(context, newList){
-            context.commit('changeList', newList)
+        changeContactInformation(context, newList){
+            context.commit('changeContactData', newList)
         }
     },
-
     mutations:{
-        changeList(state, newList){
-            state.readContactIcons = newList
+        changeContactData(state, newList){
+            state.readContactInformation = newList
         }
     }
 }

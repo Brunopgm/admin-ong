@@ -30,70 +30,40 @@
             </v-toolbar>
             <v-card-text>
 
-            <div class="d-flex mt-3">
-                <v-text-field
-                    :disabled="!isEditing"
-                    color="black"
-                    label="Lagradouro"
-                    v-model='address.street'
-                ></v-text-field>
-
-                <v-text-field
-                    :disabled="!isEditing"
-                    color="black"
-                    label="Bairro"
-                    v-model='address.neighborhood'
-                ></v-text-field>
-            </div>
-
-            <div class="d-flex mb-3">
-                <v-text-field
-                    :disabled="!isEditing"
-                    color="black"
-                    label="Cidade"                    
-                ></v-text-field>
-
-                <v-text-field
-                    class="mr-3 ml-3"
-                    :disabled="!isEditing"
-                    color="black"
-                    label="Número"
-                ></v-text-field>
-                <v-text-field
-                    :disabled="!isEditing"
-                    color="black"
-                    label="CEP"
-                ></v-text-field>
-                
-            </div>
-            <v-divider></v-divider>
             
+            <v-text-field
+                :disabled="!isEditing"
+                color="black"
+                label="Endereço"
+                v-model='readContactInformation.address'
+            ></v-text-field>
 
-            
-            <div class="d-flex mt-3">
-                <v-text-field
-                    class="mr-2"
-                    :disabled="!isEditing"
-                    color="black"
-                    type="tel"
-                    label="Telefone 1"
-                ></v-text-field>
-                <v-text-field
-                    :disabled="!isEditing"
-                    color="black"
-                    type="tel"
-                    label="Telefone 2"
-                ></v-text-field>
-            </div>
-
-             <div class="d-flex">
-                <v-text-field
+            <v-text-field
                     :disabled="!isEditing"
                     color="black"
                     label="E-mail"
                     type="email"
+                    v-model="readContactInformation.email"
+            ></v-text-field>
+                        
+            <div class="phones">
+                <v-text-field
+                    v-if="readContactInformation.phones"
+                    class="mr-3"
+                    :disabled="!isEditing"
+                    color="black"
+                    type="tel"
+                    label="Telefone 1"
+                    v-model="readContactInformation.phones.firstPhone"
                 ></v-text-field>
-
+                <v-text-field
+                    v-if="readContactInformation.phones"
+                    :disabled="!isEditing"
+                    color="black"
+                    type="tel"
+                    label="Telefone 2"
+                    v-model="readContactInformation.phones.secondPhone"
+                ></v-text-field>
             </div>
 
             </v-card-text>
@@ -122,26 +92,33 @@
 </template>
 
 <script>
-  export default {
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapGetters } = createNamespacedHelpers('page4') 
+export default {
     data () {
       return {
         hasSaved: false,
         isEditing: null,
         model: null,
-        address: {
-            street:'Rua achiles',
-            neighborhood: 'Padroeira',
-            number: 420,
-            }
+        address:''
       }
+    },
+    computed:{
+        ...mapGetters({readContactInformation: 'listContactInformation'})
     },
     methods: {
       save () {
         this.isEditing = !this.isEditing
         this.hasSaved = true
-      },
+      }
     },
   }
 </script>
 <style>
+@media(min-width: 600px){
+    .phones{
+        display: flex;
+    }
+}
 </style>
