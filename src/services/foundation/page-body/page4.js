@@ -22,3 +22,10 @@ export const read = async () => {
 }
 
 
+export const create = async (contactInformation) => {
+    await FirebaseApp.db.collection("foundation").doc("contactData").set({contactInformation}).then(response => {
+        response
+    })  
+}
+
+

@@ -27,8 +27,8 @@ export default {
     },
     async created(){
         const response = await read()
-        this.listContactData = response
-        this.changeContactInformation(response)
+        this.listContactData = response.contactInformation
+        this.changeContactInformation(response.contactInformation)
     } 
 }
   

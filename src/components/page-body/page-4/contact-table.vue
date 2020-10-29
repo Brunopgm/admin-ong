@@ -93,6 +93,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { create } from '@/services/foundation/page-body/page4'
 
 const { mapGetters } = createNamespacedHelpers('page4') 
 export default {
@@ -111,8 +112,12 @@ export default {
       save () {
         this.isEditing = !this.isEditing
         this.hasSaved = true
-      }
-    },
+        this.uploadContactData(this.readContactInformation)
+      },
+      async uploadContactData(newContactInformation){
+        await create(newContactInformation)
+    }
+    }
   }
 </script>
 <style>
