@@ -18,7 +18,7 @@
                 color="grey lighten-3"
                 fab
                 small
-                @click="isEditing = !isEditing"
+                @click="[isEditing = !isEditing]"
             >
                 <v-icon v-if="isEditing">
                 mdi-close
@@ -84,6 +84,7 @@
                 absolute
                 bottom
                 left
+                color="success"
                 >
                 Seus dados foram salvos
             </v-snackbar>
@@ -97,25 +98,28 @@ import { create } from '@/services/foundation/page-body/page4'
 
 const { mapGetters } = createNamespacedHelpers('page4') 
 export default {
+    props:{
+        listContactData:{
+            default: null
+        }
+    },
     data () {
       return {
         hasSaved: false,
         isEditing: null,
-        model: null,
-        address:''
       }
     },
     computed:{
         ...mapGetters({readContactInformation: 'listContactInformation'})
     },
     methods: {
-      save () {
-        this.isEditing = !this.isEditing
-        this.hasSaved = true
-        this.uploadContactData(this.readContactInformation)
-      },
-      async uploadContactData(newContactInformation){
-        await create(newContactInformation)
+        save () {
+            this.isEditing = !this.isEditing
+            this.hasSaved = true
+            this.uploadContactData(this.readContactInformation)
+        },
+        async uploadContactData(newContactInformation){
+            await create(newContactInformation)
     }
     }
   }

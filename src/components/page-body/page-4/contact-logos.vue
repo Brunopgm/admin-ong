@@ -1,7 +1,9 @@
 <template>
         <v-container fluid class="pl-0">
+            <contactTable/>
             <h1 class="title">Logos</h1>
             <p>Modifique os logos de e-mail e endereço</p>
+            
             <v-row dense class="container-images">
                 <v-col
                 v-for="(card, i) in cards"
@@ -41,11 +43,13 @@
 </template>
 
 <script>
+import contactTable from './contact-table'
 import { createNamespacedHelpers } from 'vuex'
 import { uploadFile, downloadFile } from '@/services/foundation/page-body/page4'
 
 const { mapGetters } = createNamespacedHelpers('page4')
 export default {
+    components:{contactTable},
     props: {
       listContactData: {default:''}
     },
