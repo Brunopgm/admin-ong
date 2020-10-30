@@ -5,42 +5,30 @@
 
         <template>
             <v-tabs>
-                <v-tab @click="component = 'contactLogos'">Contatos</v-tab>
+                <v-tab @click="component = 'contact'">Contatos</v-tab>
                 <v-tab @click="component = 'formsText'">Formulários</v-tab>
             </v-tabs>
         </template>
-               
         <component 
             :is="component" 
-            :listContactData='listContactData'>
+            >
         </component>
     </div>
 </template>
 
 <script>
 import formsText from './formsText'
-import contactLogos from './contact-logos'
+import contact from './contact'
 
-import { createNamespacedHelpers } from 'vuex'
-import { read } from '@/services/foundation/page-body/page4'
 
-const { mapActions } = createNamespacedHelpers('page4')
 export default {
-    components: { contactLogos, formsText},
+    components: { contact, formsText},
     data(){
         return{
             listContactData: null,
-            component: contactLogos
+            component: contact
         }
-    },
-    methods:{
-        ...mapActions(['changeContactInformation'])
-    },
-    async created(){
-        const response = await read()
-        this.listContactData = response.contactInformation
-        this.changeContactInformation(response.contactInformation)
-    } 
+    }
 }
   
 </script>

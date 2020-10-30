@@ -45,14 +45,11 @@
 <script>
 import contactTable from './contact-table'
 import { createNamespacedHelpers } from 'vuex'
-import { uploadFile, downloadFile } from '@/services/foundation/page-body/page4'
+import { uploadFile, downloadFile, read } from '@/services/foundation/page-body/page4'
 
-const { mapGetters } = createNamespacedHelpers('page4')
+const { mapGetters, mapActions } = createNamespacedHelpers('page4')
 export default {
     components:{contactTable},
-    props: {
-      listContactData: {default:''}
-    },
     watch:{
       listContactData(){
         this.cards[0].src = this.listContactData.contactIcons.addressIcon
@@ -60,6 +57,7 @@ export default {
       }
     },
     data: () => ({
+      listContactData: '',
       adressIcon: null,
       emailIcon:null,
       editedNameFile:'',
@@ -73,6 +71,7 @@ export default {
       ...mapGetters({readContactData:'readContactInformation'})
     },
     methods:{
+       ...mapActions(['changeContactInformation']),
         fileSelected(file){
           uploadFile(file, `${this.editedNameFile}`)
             .then(()=>{
@@ -93,7 +92,12 @@ export default {
             this.cards[this.editedFileIndex].src = urlImage
             })
       },
-    }
+    },
+    async created(){
+        const response = await read()
+        this.listContactData = response.contactInformation
+        this.changeContactInformation(response.contactInformation)
+    } 
   }
 </script>
 <style>
