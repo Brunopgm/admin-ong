@@ -73,7 +73,7 @@ export default {
     methods:{
        ...mapActions(['changeContactInformation']),
         fileSelected(file){
-          uploadFile(file, `${this.editedNameFile}`)
+          uploadFile(file, `${this.editedNameFile}.png`)
             .then(()=>{
               console.log('Tudo ok');
               this.updateFile()
