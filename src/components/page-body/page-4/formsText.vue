@@ -1,12 +1,12 @@
 <template>
     <div class="page-content">
-        <v-container fluid>
+        <v-container fluid v-for="item in readFormText.formsText" :key="item.title">
             <div class="text-form">
-                <h3 class="title-form">Formulário "Equipe de voluntários"</h3>
+                <h3 class="title-form">{{ item.title }}</h3>
                 <v-icon class="icon-open">
                     mdi-format-quote-open-outline
                 </v-icon>            
-                <span>{{readFormText.formsText.whereToFindUs}}</span>
+                <span>{{item.text}}</span>
                 <v-icon class="icon-close">
                     mdi-format-quote-close-outline
                 </v-icon>
@@ -16,8 +16,8 @@
                 class="mt-5"
                 name="input-7-1"
                 filled
-                label="Equipe de voluntários"
-                v-model="readFormText.formsText.whereToFindUs"
+                :label="item.title"
+                v-model="item.text"
             >
             </v-textarea>
             <v-btn
@@ -27,34 +27,8 @@
                 >
                 Salvar
             </v-btn>
-            <hr>
-            <div class="text-form">
-                <h3 class="title-form pt-10">Formulário "Onde nos encontrar"</h3>
-
-                <v-icon class="icon-open">
-                    mdi-format-quote-open-outline
-                </v-icon>
-                <span class="text-form">{{readFormText.formsText.voluntersTeam}}</span>
-                <v-icon class="icon-close">
-                    mdi-format-quote-close-outline
-                </v-icon>
-            </div>
-            <v-textarea
-            class="mt-5"
-            name="input-7-1"
-            filled
-            label="Equipe de voluntários"
-            v-model='readFormText.formsText.voluntersTeam'
-            ></v-textarea>
-            <v-btn
-                color="grey"
-                class="white--text save-button"
-                @click="save()"
-                >
-                Salvar
-            </v-btn>
+            <hr>            
         </v-container>
-
     </div>
 </template>
 
@@ -75,7 +49,7 @@ export default {
         },
         async uploadContactData(newFormText){
             await create(newFormText)
-    }
+        }
     }
 }
 </script>
