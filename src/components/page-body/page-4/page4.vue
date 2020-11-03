@@ -7,13 +7,9 @@
             <v-tabs>
                 <v-tab @click="component = 'contact'">Contatos</v-tab>
                 <v-tab @click="component = 'formsText'">Formulários</v-tab>
-                <!-- <v-tab @click="component = ''">Modal e outros</v-tab> -->
             </v-tabs>
         </template>
-        <component 
-            :is="component" 
-            >
-        </component>
+        <component :is="component"/>
     </div>
 </template>
 
