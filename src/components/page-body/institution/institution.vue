@@ -15,55 +15,30 @@
           <collaborators/>
         </div>
       </div>
+
+      <v-btn
+        elevation="2"
+        fab
+        
+      >
+      <v-icon>mdi-plus</v-icon>
+      </v-btn>
+
     </div>
 </template>
 
 <script>
   import collaborators from './collaborators'
   export default {
-    components:{collaborators},
-    data:()=> ({
-      collaborators:[
-        {
-          name: 'Matheus Escudeiro', 
-          occupation: 'Presidente do Próximo',
-          photo: 'https://i.pinimg.com/originals/c2/bb/f1/c2bbf1e1ff2e4c704789989f8adfbc22.jpg'
-        },
-        {
-          name: 'Matheus Escudeiro', 
-          occupation: 'Presidente do Próximo',
-          photo: 'https://i.pinimg.com/originals/c2/bb/f1/c2bbf1e1ff2e4c704789989f8adfbc22.jpg'
-        },
-        {
-          name: 'Naruto Uzumaki', 
-          occupation: 'Atual hokage de Konohagakure',
-          photo: 'https://i.pinimg.com/originals/c2/bb/f1/c2bbf1e1ff2e4c704789989f8adfbc22.jpg'
-        },
-        {
-          name: 'Sasuke Uchiha', 
-          occupation: 'Ninja investigador',
-          photo: 'https://nerdhits.com.br/wp-content/uploads/2020/08/sasuke-uchiha-1024x576.jpg'
-        }
-        
-      ]
-    })
+    components:{collaborators}
   }
 </script>
-<style>
-  .subtitle-card{
-    height: 38px;
-  }
-  .collaborator-name{
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
 
-  .image-collaborator img{
-    border-radius: 50%;
-  }
+<style>
   .container-collaborators-with-slide{
       display: none;
     }
+
   @media(min-width: 480px){
   .container-collaborators-with-slide{
       display: block;

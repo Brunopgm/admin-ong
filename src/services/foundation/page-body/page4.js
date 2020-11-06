@@ -5,8 +5,6 @@ const storageReference = firebase.storage().ref()
 
 export const uploadFile = async (event, nameFile)=>{
     const refereceFile = storageReference.child(`page-body/page-4/${nameFile}`)
-    console.log(event);
-    console.log(nameFile);
     return await refereceFile.put(event)
 }
 
