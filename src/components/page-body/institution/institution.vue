@@ -18,8 +18,8 @@
 
       <v-btn
         elevation="2"
-        fab
-        
+        fab  
+        @click="[changeDialog({'openDialog': true, 'newDialog': true})]"
       >
       <v-icon>mdi-plus</v-icon>
       </v-btn>
@@ -29,8 +29,14 @@
 
 <script>
   import collaborators from './collaborators'
+  import { createNamespacedHelpers } from 'vuex'
+
+  const { mapActions } = createNamespacedHelpers('collaborator') 
   export default {
-    components:{collaborators}
+    components:{collaborators},
+    methods:{
+      ...mapActions(['changeDialog'])
+    }
   }
 </script>
 

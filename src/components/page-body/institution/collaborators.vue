@@ -2,7 +2,7 @@
     <div>
       <div class="d-flex flex-wrap">
           <v-slide-item
-              v-for="(collaborator, i) in collaborators" 
+              v-for="(collaborator, collaboratorIndex) in collaborators" 
               :key="collaborator.name"
               >
               <v-card
@@ -37,12 +37,7 @@
                   <v-btn
                   outlined
                   text
-                  @click="[
-                    dialog=true, 
-                    editedCollaboratorIndex = i,
-                    editedCollaborator.photo = collaborators[i].photo,
-                    editedCollaborator.id = collaborators[i].id
-                    ]"
+                  @click="[editCollaborator(collaboratorIndex)]"
                   >
                   Editar
                   </v-btn>
@@ -52,12 +47,12 @@
           <div>
             <v-row justify="center">
               <v-dialog
-                  v-model="dialog"
+                  v-model="dialog.openDialog"
                   persistent
                   max-width="600px"
-                  v-if="dialog"
+                  v-if="dialog.openDialog && (editedCollaborator.name || dialog.newDialog === true)"
                   >
-                    <v-card>
+                    <v-card class="modal">
                       <v-card-title>
                         <span class="headline">Editar</span>
                       </v-card-title>
@@ -68,11 +63,7 @@
                         color="grey"
                         >
                           <img 
-                            v-if="!editedCollaborator.photo" 
-                            src="https://www.pirai.rj.leg.br/imagens/imagem-0/image" 
-                            alt="Foto de perfil anônimo">
-                          <img 
-                            :src="editedCollaborator.photo"
+                            :src="editedCollaborator.photo || anonymousPhoto"
                             alt="Foto de perfil"
                           >
                         <v-file-input
@@ -112,7 +103,7 @@
                         <v-btn
                           color="blue darken-1"
                           text
-                          @click="[dialog = false, cleanArrayCollaborator()]"
+                          @click="[changeDialog({'openDialog': false, 'newDialog': false}), cleanArrayCollaborator()]"
                           >
                             Fechar
                         </v-btn>
@@ -129,18 +120,18 @@
               </v-row>
             </div>
       </div>
-
     </div>
 </template> 
 
 <script>
-  import { read, create, uploadFile, downloadFile } from '@/services/foundation/page-body/institution'
+  import { createNamespacedHelpers } from 'vuex'
+  import { read, create, uploadFile, downloadFile } 
+    from '@/services/foundation/page-body/institution'
 
+  const { mapGetters, mapActions } = createNamespacedHelpers('collaborator')
   export default {
     data:()=> ({
-      imagem: 'https://www.pirai.rj.leg.br/imagens/imagem-0/image',
-      collaborators:[],
-      dialog: false,
+      anonymousPhoto: null,
       editedCollaboratorIndex: null,
       editedCollaborator: {
         id: '',
@@ -149,9 +140,13 @@
         photo: ''
       },
       editedFile: null,
-      editedFileId: null
     }),
+      editedFileId: null,
+    computed:{
+      ...mapGetters({dialog: 'readDialog', collaborators:'readCollaborators'})
+    },
     methods:{
+      ...mapActions(['changeDialog', 'changeListCollaborators']),
       save(){
         if(this.editedCollaborator.name === '' || this.editedCollaborator.occupation === '') {
             alert('Campos não preenchidos')
@@ -162,15 +157,22 @@
               this.updateFile().then(urlImage => { 
                 this.editedCollaborator.photo = urlImage
                 this.collaborators[this.editedCollaboratorIndex] = this.editedCollaborator
-                this.dialog = false
+                this.changeDialog({'openDialog': false, 'newDialog': false})
                 this.uploadCollaborators(this.collaborators)
                 this.cleanArrayCollaborator()
                 })
             }).catch(()=>{
-              alert('erro');
+              alert('Erro ao editar. Tente novamente mais tarde');
             })
-
           }
+      },
+      editCollaborator(collaboratorIndex){
+        this.editedCollaboratorIndex = collaboratorIndex
+        this.editedCollaborator.name =  this.collaborators[collaboratorIndex].name 
+        this.editedCollaborator.occupation =  this.collaborators[collaboratorIndex].occupation 
+        this.editedCollaborator.photo = this.collaborators[collaboratorIndex].photo
+        this.editedCollaborator.id = this.collaborators[collaboratorIndex].id
+        this.changeDialog({'openDialog': true, 'newDialog': false})
       },
       cleanArrayCollaborator(){
         this.editedCollaborator = {
@@ -181,27 +183,30 @@
         }
       },
       fileSelected(event){
-          this.editedFile = event.target ? event.target.files[0] : event 
+          this.editedFile = event 
           this.editedFileId = this.collaborators[this.editedCollaboratorIndex].id
-          
-
       },
       async uploadCollaborators(newCollaborator){
           await create(newCollaborator)
       },
       async updateFile(){
-         return await downloadFile(`page-body/institution/collaborator-${this.editedFileId}`)
+        return await downloadFile(`page-body/institution/collaborator-${this.editedFileId}`)
           .then(urlImage => urlImage)
-      },
+      }
     },
       async created(){
       const response = await read()
-      this.collaborators = response.collaborators
+      const collaborators = response.collaborators
+      this.changeListCollaborators(collaborators)
+      this.anonymousPhoto = response.anonymousPhoto
     }
   }
 </script>
 
 <style scoped>
+  .modal{
+    overflow: hidden
+  }
   .subtitle-card{
     height: 38px;
   }
