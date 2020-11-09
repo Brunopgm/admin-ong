@@ -116,6 +116,7 @@
                         </v-btn>
                         </v-card-actions>
                       </v-card>
+
                     </v-dialog>
               </v-row>
             </div>
@@ -141,30 +142,39 @@
       },
       editedFile: null,
     }),
-      editedFileId: null,
     computed:{
       ...mapGetters({dialog: 'readDialog', collaborators:'readCollaborators'})
     },
     methods:{
       ...mapActions(['changeDialog', 'changeListCollaborators']),
       save(){
+        const sizeArrayCollaborator = this.collaborators.length
+        this.editedCollaborator.id ? '': 
+        this.editedCollaborator.id = this.collaborators[sizeArrayCollaborator - 1].id + 1
         if(this.editedCollaborator.name === '' || this.editedCollaborator.occupation === '') {
             alert('Campos não preenchidos')
             return
-          }else{ 
-            uploadFile(this.editedFile, `collaborator-${this.editedFileId}`)
+          }else if(this.editedFile){ 
+            uploadFile(this.editedFile, `collaborator-${this.editedCollaborator.id}`)
             .then(()=>{
               this.updateFile().then(urlImage => { 
                 this.editedCollaborator.photo = urlImage
-                this.collaborators[this.editedCollaboratorIndex] = this.editedCollaborator
-                this.changeDialog({'openDialog': false, 'newDialog': false})
-                this.uploadCollaborators(this.collaborators)
-                this.cleanArrayCollaborator()
+                this.addEditedCollaboratorInCollaborators()
                 })
             }).catch(()=>{
               alert('Erro ao editar. Tente novamente mais tarde');
-            })
+            })   
+          } else{
+            this.addEditedCollaboratorInCollaborators()
           }
+      },
+      addEditedCollaboratorInCollaborators(){
+        this.dialog.newDialog ? 
+        this.collaborators.push(this.editedCollaborator):
+        this.collaborators[this.editedCollaboratorIndex] = this.editedCollaborator
+        this.uploadCollaborators(this.collaborators)
+        this.changeDialog({'openDialog': false, 'newDialog': false})
+        this.cleanArrayCollaborator()
       },
       editCollaborator(collaboratorIndex){
         this.editedCollaboratorIndex = collaboratorIndex
@@ -183,14 +193,13 @@
         }
       },
       fileSelected(event){
-          this.editedFile = event 
-          this.editedFileId = this.collaborators[this.editedCollaboratorIndex].id
+          this.editedFile = event  
       },
       async uploadCollaborators(newCollaborator){
           await create(newCollaborator)
       },
       async updateFile(){
-        return await downloadFile(`page-body/institution/collaborator-${this.editedFileId}`)
+        return await downloadFile(`page-body/institution/collaborator-${this.editedCollaborator.id}`)
           .then(urlImage => urlImage)
       }
     },
