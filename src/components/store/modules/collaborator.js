@@ -18,7 +18,6 @@ export default {
     actions:{
         changeDialog(context, dialog){   
             dialog.newDialog === true ? dialog.newDialog = true : dialog.newDialog = false   
-            // console.log(dialog.openDialog);
             context.commit('addValueDialog', dialog)
         },
         changeListCollaborators(context, newList){
@@ -29,7 +28,6 @@ export default {
         addValueDialog(state, openDialog){
             state.dialog.openDialog = openDialog.openDialog
             state.dialog.newDialog = openDialog.newDialog
-            // console.log(state.dialog.openDialog);
         },
         addCollaboratos(state, newList){
             state.collaborators = newList

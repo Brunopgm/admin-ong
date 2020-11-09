@@ -29,7 +29,7 @@
                   color="gray"
                   class="image-collaborator"
                   >
-                  <img :src="collaborator.photo">
+                  <img :src="collaborator.photo || collaborators.anonymousPhoto">
                   </v-list-item-avatar>
               </v-list-item>
 
@@ -126,7 +126,7 @@
 
 <script>
   import { createNamespacedHelpers } from 'vuex'
-  import { read, create, uploadFile, downloadFile } 
+  import { read, uploadFile, downloadFile, update } 
     from '@/services/foundation/page-body/institution'
 
   const { mapGetters, mapActions } = createNamespacedHelpers('collaborator')
@@ -195,8 +195,8 @@
       fileSelected(event){
           this.editedFile = event  
       },
-      async uploadCollaborators(newCollaborator){
-          await create(newCollaborator)
+      async uploadCollaborators(newListCollaborators){
+        await update(newListCollaborators)
       },
       async updateFile(){
         return await downloadFile(`page-body/institution/collaborator-${this.editedCollaborator.id}`)
@@ -207,7 +207,6 @@
       const response = await read()
       const collaborators = response.collaborators
       this.changeListCollaborators(collaborators)
-      this.anonymousPhoto = response.anonymousPhoto
     }
   }
 </script>

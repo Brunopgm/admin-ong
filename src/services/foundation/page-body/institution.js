@@ -14,23 +14,17 @@ export const downloadFile = (path) => {
 }
 
 
-export const update = async () => {
-    await FirebaseApp.db.collection("foundation").doc('institution').set({})
+export const update = async (collaborators) => {
+    await FirebaseApp.db.collection("foundation").doc('institution').set({collaborators})
         .then(response => {
         response
     })
 }
 
 export const read = async () => {
-    let menu = null
+    let collaborators = null
     await FirebaseApp.db.collection("foundation").doc('institution').get().then(response => {
-        menu = response.data()
+        collaborators = response.data()
     })
-    return menu
-}
-
-export const create = async (collaborators) => {
-    await FirebaseApp.db.collection("foundation").doc("institution").set({collaborators}).then(response => {
-        response
-    })  
+    return collaborators
 }
