@@ -47,7 +47,7 @@ import contactTable from './contact-table'
 import { createNamespacedHelpers } from 'vuex'
 import { uploadFile, downloadFile, read } from '@/services/foundation/page-body/page4'
 
-const { mapGetters, mapActions } = createNamespacedHelpers('page4')
+const {  mapActions } = createNamespacedHelpers('page4')
 export default {
     components:{contactTable},
     watch:{
@@ -67,9 +67,6 @@ export default {
         { title: 'E-mail', src: null, nameFile: 'email' },
       ]
     }),
-    computed:{
-      ...mapGetters({readContactData:'readContactInformation'})
-    },
     methods:{
        ...mapActions(['changeContactInformation']),
         fileSelected(file){
