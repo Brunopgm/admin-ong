@@ -71,8 +71,8 @@ import { downloadFile } from '@/services/foundation/header'
           { title: 'Rodapé', icon: 'mdi-page-layout-footer', to:'/rodape' },
         ],
         subfields: [
-        [ 'Home', 'mdi-chevron-right', 'page-1'],
-        [ 'Nossa História', 'mdi-chevron-right', 'page-2' ],
+        [ 'Instituição', 'mdi-chevron-right', 'institution'],
+        [ 'Galeria', 'mdi-chevron-right', 'page-2' ],
         [ 'Projetos e ações', 'mdi-chevron-right', 'page-3'],
         [ 'Contato e formulários', 'mdi-chevron-right', 'page4']
         ],

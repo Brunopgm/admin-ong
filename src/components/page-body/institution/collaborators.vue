@@ -1,0 +1,222 @@
+<template>
+    <div>
+      <div class="d-flex flex-wrap">
+          <v-slide-item
+              v-for="(collaborator, i) in collaborators" 
+              :key="collaborator.name"
+              >
+              <v-card
+              class="mb-4 mr-3"
+              width="344"
+              outlined
+              >
+              <v-list-item three-line>
+                  <v-list-item-content>
+                  <div class="overline mb-2">
+                      Colaborador
+                  </div>
+                    <v-list-item-title class="mb-1 collaborator-name">
+                        {{collaborator.name}}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="subtitle-card">
+                      {{ collaborator.occupation }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+
+                  <v-list-item-avatar
+                  tile
+                  size="100"
+                  color="gray"
+                  class="image-collaborator"
+                  >
+                  <img :src="collaborator.photo">
+                  </v-list-item-avatar>
+              </v-list-item>
+
+              <v-card-actions>
+                  <v-btn
+                  outlined
+                  text
+                  @click="[
+                    dialog=true, 
+                    editedCollaboratorIndex = i,
+                    editedCollaborator.photo = collaborators[i].photo,
+                    editedCollaborator.id = collaborators[i].id
+                    ]"
+                  >
+                  Editar
+                  </v-btn>
+              </v-card-actions>
+            </v-card>
+            </v-slide-item>
+          <div>
+            <v-row justify="center">
+              <v-dialog
+                  v-model="dialog"
+                  persistent
+                  max-width="600px"
+                  v-if="dialog"
+                  >
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Editar</span>
+                      </v-card-title>
+                      <hr>
+                      <v-row justify="center" class="mt-1">
+                        <v-avatar
+                        size="200"
+                        color="grey"
+                        >
+                          <img 
+                            v-if="!editedCollaborator.photo" 
+                            src="https://www.pirai.rj.leg.br/imagens/imagem-0/image" 
+                            alt="Foto de perfil anônimo">
+                          <img 
+                            :src="editedCollaborator.photo"
+                            alt="Foto de perfil"
+                          >
+                        <v-file-input
+                            label="File input"
+                            hide-input
+                            prepend-icon="mdi-camera"
+                            dark 
+                            class="logo-image"
+                            @change="fileSelected"
+                        ></v-file-input>
+                        </v-avatar>
+
+                      </v-row>       
+
+                      <v-card-text>
+                        <v-container>
+                            <v-row>                          
+                              <v-col cols="12">
+                                <v-text-field
+                                  label="Nome*"
+                                  v-model="editedCollaborator.name"
+                                  required
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="12">
+                                <v-text-field
+                                  label="Função/Ocupação*"
+                                  v-model="editedCollaborator.occupation"
+                                  required
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="[dialog = false, cleanArrayCollaborator()]"
+                          >
+                            Fechar
+                        </v-btn>
+                        <v-btn
+                          color="blue darken-1"
+                          text                          
+                          @click="save()"
+                        >
+                          Salvar
+                        </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+              </v-row>
+            </div>
+      </div>
+
+    </div>
+</template> 
+
+<script>
+  import { read, create, uploadFile, downloadFile } from '@/services/foundation/page-body/institution'
+
+  export default {
+    data:()=> ({
+      imagem: 'https://www.pirai.rj.leg.br/imagens/imagem-0/image',
+      collaborators:[],
+      dialog: false,
+      editedCollaboratorIndex: null,
+      editedCollaborator: {
+        id: '',
+        name: '',
+        occupation: '',
+        photo: ''
+      },
+      editedFile: null,
+      editedFileId: null
+    }),
+    methods:{
+      save(){
+        if(this.editedCollaborator.name === '' || this.editedCollaborator.occupation === '') {
+            alert('Campos não preenchidos')
+            return
+          }else{ 
+            uploadFile(this.editedFile, `collaborator-${this.editedFileId}`)
+            .then(()=>{
+              this.updateFile().then(urlImage => { 
+                this.editedCollaborator.photo = urlImage
+                this.collaborators[this.editedCollaboratorIndex] = this.editedCollaborator
+                this.dialog = false
+                this.uploadCollaborators(this.collaborators)
+                this.cleanArrayCollaborator()
+                })
+            }).catch(()=>{
+              alert('erro');
+            })
+
+          }
+      },
+      cleanArrayCollaborator(){
+        this.editedCollaborator = {
+          id: '',
+          name: '',
+          occupation: '',
+          photo: ''
+        }
+      },
+      fileSelected(event){
+          this.editedFile = event.target ? event.target.files[0] : event 
+          this.editedFileId = this.collaborators[this.editedCollaboratorIndex].id
+          
+
+      },
+      async uploadCollaborators(newCollaborator){
+          await create(newCollaborator)
+      },
+      async updateFile(){
+         return await downloadFile(`page-body/institution/collaborator-${this.editedFileId}`)
+          .then(urlImage => urlImage)
+      },
+    },
+      async created(){
+      const response = await read()
+      this.collaborators = response.collaborators
+    }
+  }
+</script>
+
+<style scoped>
+  .subtitle-card{
+    height: 38px;
+  }
+  .collaborator-name{
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .image-collaborator img{
+    border-radius: 50%;
+  }
+  .logo-image{
+        position: absolute;
+        right: 18px;
+        top: 130px;
+        z-index: 2;
+    }
+</style>

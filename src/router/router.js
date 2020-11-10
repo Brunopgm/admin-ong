@@ -5,11 +5,12 @@ import Home from "@/components/Home.vue"
 import Header from "@/components/header/Header.vue"
 import Footer from "@/components/footer/Footer.vue"
 
-import Page1 from "@/components/page-body/page-1.vue"
+import Institution from "@/components/page-body/institution/institution.vue"
 import Page2 from "@/components/page-body/page-2.vue"
 import Page3 from "@/components/page-body/page-3.vue"
 import Page4 from "@/components/page-body/page-4/page4.vue"
 import Page5 from "@/components/page-body/page-5.vue"
+import Collaborators from '@/components/page-body/institution/collaborators.vue'
 
 Vue.use(Router);
 const router = new Router({
@@ -31,9 +32,9 @@ const router = new Router({
       component: Footer
     },
     {
-      path: "/page-1",     
-      name: "page-1",
-      component: Page1
+      path: "/instituição",     
+      name: "institution",
+      component: Institution
     },
     {
       path: "/page-2",     
@@ -54,6 +55,11 @@ const router = new Router({
       path: "/page-5",     
       name: "page-5",
       component: Page5
+    },
+    {
+      path: "/collaborators",     
+      name: "collaborators",
+      component: Collaborators
     }
   ]
 });

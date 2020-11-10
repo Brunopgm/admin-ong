@@ -34,7 +34,6 @@
                     class="white--text button-textarea"
                     @click.stop="[dialog = true]"
                     v-if="item.modalImage"
-
                     >
                     Editar imagem
                 </v-btn>
@@ -47,7 +46,6 @@
                     >
                         <v-card class="container-modal-button">
                             <img class="image-logo" :src="item.modalImage">
-
                             <div class="container-button">
                                 <v-btn
                                     color="primary"
@@ -63,7 +61,6 @@
                                 </v-btn>
 
                             </div>
-    
                         </v-card>
                     </v-dialog>
             </v-row>
