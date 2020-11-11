@@ -94,9 +94,9 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { create } from '@/services/foundation/page-body/page4'
+import { create } from '@/services/foundation/page-body/contactAndForm'
 
-const { mapGetters } = createNamespacedHelpers('page4') 
+const { mapGetters } = createNamespacedHelpers('contactAndForm') 
 export default {
     props:{
         listContactData:{

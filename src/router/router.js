@@ -5,12 +5,10 @@ import Home from "@/components/Home.vue"
 import Header from "@/components/header/Header.vue"
 import Footer from "@/components/footer/Footer.vue"
 
-import Institution from "@/components/page-body/institution/institution.vue"
-import Page2 from "@/components/page-body/page-2.vue"
-import Page3 from "@/components/page-body/page-3.vue"
-import Page4 from "@/components/page-body/page-4/page4.vue"
-import Page5 from "@/components/page-body/page-5.vue"
-import Collaborators from '@/components/page-body/institution/collaborators.vue'
+import Institution from "@/components/page-body/institution/Institution.vue"
+import Galeria from "@/components/page-body/Galeria.vue"
+import Projects from "@/components/page-body/Projects.vue"
+import ContactAndForm from "@/components/page-body/contactAndForm/ContactAndForm.vue"
 
 Vue.use(Router);
 const router = new Router({
@@ -37,29 +35,19 @@ const router = new Router({
       component: Institution
     },
     {
-      path: "/page-2",     
-      name: "page-2",
-      component: Page2
+      path: "/galeria",     
+      name: "galeria",
+      component: Galeria
     },
     {
-      path: "/page-3",     
-      name: "page-3",
-      component: Page3
+      path: "/projects",     
+      name: "projects",
+      component: Projects
     },
     {
-      path: "/page4",     
-      name: "page4",
-      component: Page4
-    },
-    {
-      path: "/page-5",     
-      name: "page-5",
-      component: Page5
-    },
-    {
-      path: "/collaborators",     
-      name: "collaborators",
-      component: Collaborators
+      path: "/contactAndForm",     
+      name: "contactAndForm",
+      component: ContactAndForm
     }
   ]
 });

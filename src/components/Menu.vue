@@ -72,9 +72,9 @@ import { downloadFile } from '@/services/foundation/header'
         ],
         subfields: [
         [ 'Instituição', 'mdi-chevron-right', 'institution'],
-        [ 'Galeria', 'mdi-chevron-right', 'page-2' ],
-        [ 'Projetos e ações', 'mdi-chevron-right', 'page-3'],
-        [ 'Contato e formulários', 'mdi-chevron-right', 'page4']
+        [ 'Galeria', 'mdi-chevron-right', 'galeria' ],
+        [ 'Projetos e ações', 'mdi-chevron-right', 'projects'],
+        [ 'Contato e formulários', 'mdi-chevron-right', 'contactAndForm']
         ],
         logoUrl: ''
       }

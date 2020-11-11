@@ -43,11 +43,11 @@
 </template>
 
 <script>
-import contactTable from './contact-table'
+import contactTable from './Contact-table'
 import { createNamespacedHelpers } from 'vuex'
-import { uploadFile, downloadFile, read } from '@/services/foundation/page-body/page4'
+import { uploadFile, downloadFile, read } from '@/services/foundation/page-body/contactAndForm'
 
-const {  mapActions } = createNamespacedHelpers('page4')
+const {  mapActions } = createNamespacedHelpers('contactAndForm')
 export default {
     components:{contactTable},
     watch:{

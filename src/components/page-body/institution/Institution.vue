@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import collaborators from './collaborators'
+  import collaborators from './Collaborators'
   import { createNamespacedHelpers } from 'vuex'
 
   const { mapActions } = createNamespacedHelpers('collaborator') 

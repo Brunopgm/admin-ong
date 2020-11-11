@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import formsText from './formsText'
-import contact from './contact'
+import formsText from './FormsText'
+import contact from './Contact'
 
 
 export default {
