@@ -17,7 +17,7 @@ export default {
     },
     actions:{
         changeDialog(context, dialog){   
-            dialog.newDialog === true ? dialog.newDialog = true : dialog.newDialog = false   
+            dialog.newDialog = dialog.newDialog === true   
             context.commit('addValueDialog', dialog)
         },
         changeListCollaborators(context, newList){

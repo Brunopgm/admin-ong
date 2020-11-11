@@ -19,6 +19,7 @@
       <v-btn
         elevation="2"
         fab  
+        class="info"
         @click="[changeDialog({'openDialog': true, 'newDialog': true})]"
       >
       <v-icon>mdi-plus</v-icon>

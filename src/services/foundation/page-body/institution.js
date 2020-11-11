@@ -8,6 +8,11 @@ export const uploadFile = async (event, nameFile)=>{
     return await refereceFile.put(event)
 }
 
+export const deletePhoto = async(nameFile) => {
+    const referenceFile = storageReference.child(`page-body/institution/${nameFile}`)
+    return await referenceFile.delete().then(()=>console.log('exluido')).catch(()=> console.log('erro'))
+}
+
 export const downloadFile = (path) => {
     return storageReference.child(path).getDownloadURL()
         .then(url =>url)
