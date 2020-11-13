@@ -9,6 +9,7 @@
               class="mb-4 mr-3"
               width="344"
               outlined
+              v-if="collaborator.name"
               >
               <v-list-item three-line>
                   <v-list-item-content>
@@ -29,7 +30,7 @@
                   color="gray"
                   class="image-collaborator"
                   >
-                  <img :src="collaborator.photo">
+                  <img :src="collaborator.photo || anonymousPhoto">
                   </v-list-item-avatar>
               </v-list-item>
 
@@ -37,9 +38,21 @@
                   <v-btn
                   outlined
                   text
+                  color="white"
+                  class='info'
                   @click="[editCollaborator(collaboratorIndex)]"
                   >
                   Editar
+                  </v-btn>
+
+                  <v-btn
+                  outlined
+                  color="white"
+                  class='error'
+                  text
+                  @click="[deleteCollaborator(collaboratorIndex)]"
+                  >
+                  Excluir
                   </v-btn>
               </v-card-actions>
             </v-card>
@@ -61,6 +74,7 @@
                         <v-avatar
                         size="200"
                         color="grey"
+                        class="image-collaborator"
                         >
                           <img 
                             :src="editedCollaborator.photo || anonymousPhoto"
@@ -126,7 +140,7 @@
 
 <script>
   import { createNamespacedHelpers } from 'vuex'
-  import { read, create, uploadFile, downloadFile } 
+  import { read, uploadFile, downloadFile, update, deletePhoto } 
     from '@/services/foundation/page-body/institution'
 
   const { mapGetters, mapActions } = createNamespacedHelpers('collaborator')
@@ -193,10 +207,15 @@
         }
       },
       fileSelected(event){
-          this.editedFile = event  
+          this.editedFile = event 
       },
-      async uploadCollaborators(newCollaborator){
-          await create(newCollaborator)
+      async deleteCollaborator(i){
+        await deletePhoto(`collaborator-${i}`)
+        this.collaborators.splice(i, 1)
+        this.uploadCollaborators(this.collaborators)
+      },
+      async uploadCollaborators(newListCollaborators){
+        await update(newListCollaborators)
       },
       async updateFile(){
         return await downloadFile(`page-body/institution/collaborator-${this.editedCollaborator.id}`)
@@ -207,7 +226,7 @@
       const response = await read()
       const collaborators = response.collaborators
       this.changeListCollaborators(collaborators)
-      this.anonymousPhoto = response.anonymousPhoto
+      this.anonymousPhoto = collaborators.filter(e => e.anonymousPhoto)[0].anonymousPhoto
     }
   }
 </script>
@@ -226,6 +245,7 @@
 
   .image-collaborator img{
     border-radius: 50%;
+    border: thin solid rgba(0, 0, 0, 0.12);
   }
   .logo-image{
         position: absolute;
