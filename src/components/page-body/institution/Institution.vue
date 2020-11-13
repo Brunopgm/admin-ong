@@ -16,15 +16,17 @@
         </div>
       </div>
 
-      <v-btn
-        elevation="2"
-        fab  
-        class="info"
-        @click="[changeDialog({'openDialog': true, 'newDialog': true})]"
-      >
-      <v-icon>mdi-plus</v-icon>
-      </v-btn>
-
+      <div :class="{containerButtonAdd: !collaborators}">
+        <h3 v-if="!collaborators">Adicione o seu primeiro colaborador! :)</h3>
+        <v-btn
+          elevation="2"
+          fab  
+          class="info"
+          @click="[changeDialog({'openDialog': true, 'newDialog': true})]"
+        >
+        <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </div>
     </div>
 </template>
 
@@ -32,11 +34,14 @@
   import collaborators from './Collaborators'
   import { createNamespacedHelpers } from 'vuex'
 
-  const { mapActions } = createNamespacedHelpers('collaborator') 
+  const { mapActions, mapGetters } = createNamespacedHelpers('collaborator') 
   export default {
     components:{collaborators},
+    computed:{
+      ...mapGetters({collaborators:'readCollaborators'})
+    },
     methods:{
-      ...mapActions(['changeDialog'])
+      ...mapActions(['changeDialog']),
     }
   }
 </script>
@@ -45,6 +50,12 @@
   .container-collaborators-with-slide{
       display: none;
     }
+
+  .containerButtonAdd{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   @media(min-width: 480px){
   .container-collaborators-with-slide{

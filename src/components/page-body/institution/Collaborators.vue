@@ -30,7 +30,7 @@
                   color="gray"
                   class="image-collaborator"
                   >
-                  <img :src="collaborator.photo || anonymousPhoto">
+                  <img alt="Foto do colaborador" :src="collaborator.photo || anonymousPhoto">
                   </v-list-item-avatar>
               </v-list-item>
 
@@ -209,9 +209,11 @@
       fileSelected(event){
           this.editedFile = event 
       },
-      async deleteCollaborator(i){
-        await deletePhoto(`collaborator-${i}`)
-        this.collaborators.splice(i, 1)
+      async deleteCollaborator(idCollaborator){
+        const confirmDelete = confirm('Está deletando o colaborador. Deseja continuar?')
+        if(!confirmDelete) return
+        this.editedCollaborator.photo? await deletePhoto(`collaborator-${idCollaborator}`): ''
+        this.collaborators.splice(idCollaborator, 1)
         this.uploadCollaborators(this.collaborators)
       },
       async uploadCollaborators(newListCollaborators){
@@ -226,7 +228,7 @@
       const response = await read()
       const collaborators = response.collaborators
       this.changeListCollaborators(collaborators)
-      this.anonymousPhoto = collaborators.filter(e => e.anonymousPhoto)[0].anonymousPhoto
+      this.anonymousPhoto = collaborators.filter(collaborator => collaborator.anonymousPhoto)[0].anonymousPhoto
     }
   }
 </script>
