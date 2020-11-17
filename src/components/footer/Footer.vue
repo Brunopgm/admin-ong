@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <h1 class="title">Rodapé</h1>
+        <h1>Rodapé</h1>
         <p>Personalize o rodapé modificando os links e as imagens dos icones de redes sociais e logo.</p>
 
         <div v-show="showLoading" class="container-image-loading">
