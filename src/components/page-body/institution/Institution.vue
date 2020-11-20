@@ -1,7 +1,7 @@
 <template>
     <div class="page-content">
         <h1>Instituição</h1>
-        <p class="mb-7">Personalize informações sobre a instituição.</p>
+        <p>Personalize informações sobre a instituição.</p>
         <h3>Colaboradores</h3>
         <p class="mb-7">Edite, exclua ou crie novos colaboradores </p>
 
