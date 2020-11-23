@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <h1 class="title">Cabeçalho</h1>
+        <h1>Cabeçalho</h1>
         <p>Personalize o cabeçalho do site modificando imagens, cores e o link dos campos.</p>
         
         <tableFields/>

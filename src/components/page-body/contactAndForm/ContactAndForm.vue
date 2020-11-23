@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <h1 class="title">Contato e formulários</h1>
+        <h1>Contato e formulários</h1>
         <p>Defina os dados para contato e os textos dos formulários</p>
 
         <template>
@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import formsText from './formsText'
-import contact from './contact'
+import formsText from './FormsText'
+import contact from './Contact'
 
 
 export default {

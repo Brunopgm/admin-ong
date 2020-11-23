@@ -46,7 +46,7 @@
           <v-btn
             color="primary"
             dark
-            class="mb-2 mr-2 button-input-image-label"
+            class="mb-2 mr-2"
           >
             <label 
               for="input-image" 
