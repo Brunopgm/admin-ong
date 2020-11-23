@@ -7,7 +7,8 @@
               >
               <v-card
               class="mb-4 mr-3"
-              width="344"
+              width="330"
+              min-width="330"
               outlined
               v-if="collaborator.name"
               >
@@ -63,7 +64,7 @@
                   v-model="dialog.openDialog"
                   persistent
                   max-width="600px"
-                  v-if="dialog.openDialog && (editedCollaborator.name || dialog.newDialog === true)"
+                  v-if="dialog.openDialog && (editedCollaborator.id || dialog.newDialog === true)"
                   >
                     <v-card class="modal">
                       <v-card-title>
@@ -89,7 +90,6 @@
                             @change="fileSelected"
                         ></v-file-input>
                         </v-avatar>
-
                       </v-row>       
 
                       <v-card-text>
@@ -169,18 +169,23 @@
             alert('Campos não preenchidos')
             return
           }else if(this.editedFile){ 
-            uploadFile(this.editedFile, `collaborator-${this.editedCollaborator.id}`)
-            .then(()=>{
-              this.updateFile().then(urlImage => { 
-                this.editedCollaborator.photo = urlImage
-                this.addEditedCollaboratorInCollaborators()
-                })
-            }).catch(()=>{
-              alert('Erro ao editar. Tente novamente mais tarde');
-            })   
+            const nameFileEdited = `collaborator-${this.editedCollaborator.id}`
+            this.changeImage(nameFileEdited)
+            this.addEditedCollaboratorInCollaborators()
           } else{
             this.addEditedCollaboratorInCollaborators()
           }
+      },
+      changeImage(nameFileEdited){
+        uploadFile(this.editedFile, nameFileEdited)
+            .then(()=>{
+              this.updateFile(nameFileEdited).then(urlImage => { 
+                this.editedCollaborator.photo = urlImage
+                })
+            }).catch(()=>{
+              alert('Erro ao editar imagem. Tente novamente mais tarde');
+              return
+            })
       },
       addEditedCollaboratorInCollaborators(){
         this.dialog.newDialog ? 
@@ -207,7 +212,9 @@
         }
       },
       fileSelected(event){
-          this.editedFile = event 
+        const nameFileEdited = `collaborator-edit`
+        this.editedFile = event
+        this.changeImage(nameFileEdited)   
       },
       async deleteCollaborator(idCollaborator){
         const confirmDelete = confirm('Está deletando o colaborador. Deseja continuar?')
@@ -219,8 +226,8 @@
       async uploadCollaborators(newListCollaborators){
         await update(newListCollaborators)
       },
-      async updateFile(){
-        return await downloadFile(`page-body/institution/collaborator-${this.editedCollaborator.id}`)
+      async updateFile(pathFile){
+        return await downloadFile(`page-body/institution/${pathFile}`)
           .then(urlImage => urlImage)
       }
     },
