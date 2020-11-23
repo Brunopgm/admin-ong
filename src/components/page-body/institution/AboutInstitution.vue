@@ -26,7 +26,7 @@
                         text
                         color="white"
                         class='info'
-                        @click="[dialog = true,indexTextCurrent = indexFields]"
+                        @click="[dialog = true,indexFieldCurrent = indexFields]"
                         >
                         Editar
                     </v-btn>
@@ -44,12 +44,16 @@
                             </v-card-title>
                             <hr> 
                             <v-card-text>
-                                <v-container>
-                                <p class='text-justify'>Modifique a imagem que acompanha o texto</p>
-                                <v-img
-                                    max-height="250"
-                                    src="https://picsum.photos/id/11/500/300"
-                                ></v-img>
+                                <v-container>    
+                                <div v-if="fields[indexFieldCurrent].photo">
+                                    <p class='text-justify'>Modifique a imagem que acompanha o texto</p>
+                                    <v-img
+                                        max-height="250"
+                                        class="rounded-lg"
+                                        :src="fields[indexFieldCurrent].photo"
+                                    ></v-img>                             
+
+                                </div>
                                     <v-row>
                                         <v-col cols="12">
                                             <v-text-field
@@ -109,7 +113,7 @@
             this.onResize()
         },
         methods: {
-        onResize () {
+            onResize () {
             const windowSize = window.innerWidth
             windowSize <=550? this.windowSizeMobile = false : this.windowSizeMobile = true
         }
@@ -122,5 +126,4 @@
 </script>
 
 <style>
-
 </style>
