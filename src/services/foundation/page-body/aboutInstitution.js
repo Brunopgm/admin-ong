@@ -8,6 +8,11 @@ export const uploadFile = async (event, nameFile)=>{
     return await refereceFile.put(event)
 }
 
+export const downloadFile = (path) => {
+    return storageReference.child(path).getDownloadURL()
+        .then(url =>url)
+}
+
 export const read = async () => {
     let fields = null
     await FirebaseApp.db.collection("foundation").doc('aboutInstitution').get().then(response => {

@@ -51,8 +51,21 @@
                                         max-height="250"
                                         class="rounded-lg"
                                         :src="fields[indexFieldCurrent].photo"
-                                    ></v-img>                             
-
+                                    ></v-img>
+                                    <button
+                                        class="primary rounded-circle button-change-image"
+                                    >
+                                        <label 
+                                        for="input-image" 
+                                        >
+                                        <v-icon dark>mdi-camera</v-icon>
+                                        </label>
+                                        <input 
+                                            @change="fileSelected" 
+                                            name="input-image" 
+                                            type="file" 
+                                            id="input-image"> 
+                                    </button>
                                 </div>
                                     <v-row>
                                         <v-col cols="12">
@@ -101,7 +114,7 @@
 </template>
 
 <script>
-    import { read } from '@/services/foundation/page-body/aboutInstitution'
+    import { read, uploadFile, downloadFile } from '@/services/foundation/page-body/aboutInstitution'
     export default {
         data: () => ({
         dialog: false,
@@ -116,7 +129,24 @@
             onResize () {
             const windowSize = window.innerWidth
             windowSize <=550? this.windowSizeMobile = false : this.windowSizeMobile = true
-        }
+        },
+        fileSelected(event){
+          this.showLoading = true
+          const file = event.target ? event.target.files[0] : event 
+          uploadFile(file, `mission-image.jpeg`)
+            .then(()=>{
+              this.updateFile()
+            })
+        },
+        pushUrlInList(newItemUrl){
+            this.fields[this.indexFieldCurrent].photo = newItemUrl
+        },
+        async updateFile(){
+        await downloadFile(`page-body/aboutInstitution/mission-image.jpeg`)
+          .then(urlImage => {
+            this.pushUrlInList(urlImage)
+            })
+        },
         },
         async created(){
             const response = await read()
@@ -126,4 +156,12 @@
 </script>
 
 <style>
+    .button-change-image{
+        width: 45px;
+        height: 45px;
+        margin-left: 20px;
+        top: -20px;
+        position: relative;
+        z-index: 1;
+    }
 </style>
