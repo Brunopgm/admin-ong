@@ -145,7 +145,6 @@ export default {
               this.updateFile()
             }).catch(()=>{
               this.showLoading = false
-              console.log('erro');
             })
       },
       pushUrlInList(newItemUrl){
