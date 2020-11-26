@@ -60,10 +60,11 @@
             
                 <v-card>
                 <v-card-title>
-                    <span>Altere o subtitulo</span>
+                    <span>Altere o texto</span>
                 </v-card-title>
-
+                
                 <v-card-text>
+                <p>{{ text }}</p>
                     <v-container>
                     <v-row>
                         <v-text-field
@@ -80,7 +81,7 @@
                     <v-btn
                     color="blue darken-1"
                     text
-                    @click="[dialog = false]"
+                    @click="[dialog = false, this.editedItem.text = '']"
                     >
                     Fechar
                     </v-btn>
@@ -100,7 +101,7 @@
 </template>
     
 <script>
-import { uploadFile, downloadFile } from '@/services/foundation/page-body/galery/banner'
+import { uploadFile, downloadFile, update } from '@/services/foundation/page-body/galery/banner'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapGetters } = createNamespacedHelpers('banner')
 export default {
@@ -136,6 +137,7 @@ export default {
         ...mapActions(['changeBannerFields']),
       save(){
         this.dialog = false
+        this.pushUrlInList(this.editedItem)
       },
       fileSelected(event){
           this.showLoading = true
@@ -149,10 +151,11 @@ export default {
       },
       pushUrlInList(newItem){
         const currentListUrlImage = this.bannerFields
-        newItem.url ? 
-        currentListUrlImage[this.indexItem].url = newItem.url: 
+        newItem.text ? 
+        currentListUrlImage[this.indexItem].text = newItem.text: 
         currentListUrlImage[this.indexItem].image = newItem;
         this.changeBannerFields(currentListUrlImage)
+        this.updateBannerFields()
       },
       async updateFile(){
         await downloadFile(`page-body/galery/banner/${this.title}`)
@@ -160,6 +163,9 @@ export default {
             this.pushUrlInList(urlImage)
             })
       },
+      async updateBannerFields(){
+            await update(this.bannerFields)
+      }
     }
 }
 </script>
@@ -194,10 +200,6 @@ export default {
       cursor: pointer;
     }
     
-    /* .title-url{
-      text-decoration: none;    
-      padding-bottom: 0.8rem;
-    } */
     .text-subtitle{
       white-space: nowrap;
       overflow: hidden;

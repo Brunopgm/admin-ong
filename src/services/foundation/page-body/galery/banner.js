@@ -14,8 +14,8 @@ export const downloadFile = (path) => {
 }
 
 
-export const update = async () => {
-    await FirebaseApp.db.collection("foundation").doc('contentBanner').set({})
+export const update = async (banner) => {
+    await FirebaseApp.db.collection("foundation").doc('contentBanner').set({banner})
         .then(response => {
         response
     })

@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <h1 class="title">Galeria</h1>
+        <h1>Galeria</h1>
         <p>Modifique as imagens presentes nos banner, galeria do site e vídeos.</p>
         <div class="container-card">
             <banner
@@ -10,7 +10,6 @@
                 :text='field.text'
                 :title='field.title'
                 :indexItem='indexItem'
-                class="card-banner"
                 />
         </div>
     </div>
@@ -41,15 +40,15 @@ export default {
     .container-card{
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;        
-    }
-    .card-banner{
-        margin-right: 10px;
+        margin: 0 auto;
     }
 
     @media(min-width: 740px){
         .container-card{
             flex-direction: row;       
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 2rem 0;
     }
     }
 
