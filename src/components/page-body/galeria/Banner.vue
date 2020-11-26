@@ -4,8 +4,6 @@
         class="mb-5"
         width="344"
         :loading='showLoading'
-        v-for="content in bannerContents"
-        :key="content.photo"
         > 
             <div class="container-image" :style="imageCard">
             <v-file-input
@@ -14,18 +12,18 @@
                 prepend-icon="mdi-camera"
                 dark
                 class="logo-image"
+                @change="fileSelected"
+
             ></v-file-input>
             </div>
             
             <v-card-title>
-            <a :href="url || ''" class="title-url">
-                URL
-                <v-icon>mdi-link-variant</v-icon>
-            </a>
+            <h4>{{ title }}</h4>
+            
             </v-card-title>
 
-            <v-card-subtitle class="url-subtitle">
-            {{ url || 'Essa imagem não possui URL'}}
+            <v-card-subtitle class="text-subtitle">
+            {{ text || 'Essa imagem não possui texto'}}
             </v-card-subtitle>
 
             <v-row justify="center">
@@ -55,7 +53,7 @@
                     id="input-image-label">Imagem
                     <v-icon small>mdi-camera</v-icon>
                     </label>
-                    <input name="input-image" type="file" id="input-image"> 
+                    <input @change="fileSelected" name="input-image" type="file" id="input-image"> 
                 </v-btn>
             
                 </template>
@@ -71,7 +69,7 @@
                         <v-text-field
                             label="Digite o novo subtitulo"
                             required
-                            v-model="editedItem.url"
+                            v-model="editedItem.text"
                         ></v-text-field>
                     </v-row>
                     </v-container>
@@ -82,7 +80,7 @@
                     <v-btn
                     color="blue darken-1"
                     text
-                    @click="[dialog = false, editedItem.url = '']"
+                    @click="[dialog = false]"
                     >
                     Fechar
                     </v-btn>
@@ -101,46 +99,67 @@
     </div>
 </template>
     
-
 <script>
-import {  read } from '@/services/foundation/page-body/galery/banner'
-
+import { uploadFile, downloadFile } from '@/services/foundation/page-body/galery/banner'
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions, mapGetters } = createNamespacedHelpers('banner')
 export default {
     props:{
-        image :{ type : String}, 
-        url: { type : String }, 
+        title: { type : String }, 
+        image: { type : String }, 
+        text: { type : String }, 
         indexItem: { type : Number}
         },
     data(){
       return {
-        bannerContents:null,
         dialog: false,
         editedItem: {
+            title:'',
             image:'',
-            description: ''
+            text: ''
           },
           showImage: true,
           showLoading: false
       }
     },
-    computed:{  
-      imageCard(){
-        return {
-          backgroundImage: `url('${this.image}')`,
-          backgroundPosition: 'center',
-          backgroundSize: 'contain'
-        }
-      }
+    computed:{
+        ...mapGetters({bannerFields:'readBannerFields'}),
+        imageCard(){
+            return {
+                backgroundImage: `url('${this.image}')`,
+                backgroundPosition: 'center',
+                backgroundSize: 'contain'
+                }
+              },
     },
     methods:{
+        ...mapActions(['changeBannerFields']),
       save(){
         this.dialog = false
       },
-    },
-    async created(){
-        const response = await read()
-        this.bannerContents = response.banner
-        this.showLoading = false
+      fileSelected(event){
+          this.showLoading = true
+          const file = event.target ? event.target.files[0] : event 
+          uploadFile(file, `${this.title}`)
+            .then(()=>{
+              this.updateFile()
+            }).catch(()=>{
+              this.showLoading = false
+            })
+      },
+      pushUrlInList(newItem){
+        const currentListUrlImage = this.bannerFields
+        newItem.url ? 
+        currentListUrlImage[this.indexItem].url = newItem.url: 
+        currentListUrlImage[this.indexItem].image = newItem;
+        this.changeBannerFields(currentListUrlImage)
+      },
+      async updateFile(){
+        await downloadFile(`page-body/galery/banner/${this.title}`)
+            .then(urlImage => {
+            this.pushUrlInList(urlImage)
+            })
+      },
     }
 }
 </script>
@@ -175,11 +194,11 @@ export default {
       cursor: pointer;
     }
     
-    .title-url{
+    /* .title-url{
       text-decoration: none;    
       padding-bottom: 0.8rem;
-    }
-    .url-subtitle{
+    } */
+    .text-subtitle{
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

@@ -3,8 +3,8 @@ import firebase from "firebase"
 
 const storageReference = firebase.storage().ref()
 
-export const uploadFile = async (event, logo) => {
-    const referenceFile = storageReference.child(`contentBanner/${logo}`)
+export const uploadFile = async (event, image) => {
+    const referenceFile = storageReference.child(`page-body/galery/banner/${image}`)
     return await referenceFile.put(event)
 }
 

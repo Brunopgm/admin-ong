@@ -87,7 +87,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="editUrl()"
+              @click="saveUrl()"
             >
               Salvar
             </v-btn>
@@ -133,7 +133,7 @@ export default {
     },
     methods:{
       ...mapActions(['changeUrlList']),
-      editUrl(){
+      saveUrl(){
         this.dialog = false
         this.pushUrlInList(this.editedItem)
       },
