@@ -5,6 +5,7 @@ import footerListUrlImage from './modules/footerListUrlImage'
 import contactAndForm from './modules/contactAndForm'
 import collaborator from './modules/collaborator'
 import banner from './modules/banner'
+import projects from './modules/projects'
 
 Vue.use(Vuex)
 
@@ -15,5 +16,7 @@ export default new Vuex.Store({
         footerListUrlImage, 
         contactAndForm, 
         collaborator, 
-        banner}
+        banner,
+        projects
+    }
 })

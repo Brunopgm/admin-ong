@@ -3,11 +3,11 @@
         <v-card
             max-width="100%"
             outlined
-            class="pa-4 rounded-lg"
+            class="pa-4 mb-3 rounded-lg"
         >
             <div class="content-card">
                 <v-img            
-                    src="https://picsum.photos/id/11/500/300"
+                    :src="image"
                     class="image-card"
                 ></v-img>
             
@@ -22,21 +22,10 @@
                             <v-icon>mdi-heart</v-icon>
                         </v-btn>
                     </div>
-                    
-                    <h3 class="text-justify">Ensinar programação é a nova alfabetização | Camila Achutti | TEDxSaoPaulo</h3>
-
-                    <p class="project-text">Em pleno século XXI, era da tecnologia, não podemos nos dar o luxo de não saber programar e esse aprendizado deve começar cedo.
-                    Em pleno século XXI, era da tecnologia, não podemos nos dar o luxo de não saber programar e esse aprendizado deve começar cedo.
-                    Em pleno século XXI, era da tecnologia, não podemos nos dar o luxo de não saber programar e esse aprendizado deve começar cedo.
-
-                    </p>
-
+                    <h3 class="text-justify">{{ title }}</h3>
+                    <p class="project-text">{{ text }}</p>
                 </div>
-                
-
             </div>
-
-         
          
             <v-divider class="my-4"></v-divider>
             
@@ -63,7 +52,7 @@
                         icon
                         color="pink"
                     >
-                        <v-icon>mdi-heart</v-icon>
+                        <v-icon>mdi-star</v-icon>
                     </v-btn>
                 </div>
             </div>
@@ -73,7 +62,12 @@
 
 <script>
 export default {
-
+    props:{
+        image: {type: String},
+        title: {type: String},
+        text: {type: String},
+        featured: {type: Boolean}
+    }
 }
 </script>
 
