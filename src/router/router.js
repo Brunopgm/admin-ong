@@ -7,7 +7,7 @@ import Footer from "@/components/footer/Footer.vue"
 
 import Institution from "@/components/page-body/institution/Institution.vue"
 import Galeria from "@/components/page-body/galeria/Galeria.vue"
-import Projects from "@/components/page-body/Projects.vue"
+import Projects from "@/components/page-body/projects/Projects.vue"
 import ContactAndForm from "@/components/page-body/contactAndForm/ContactAndForm.vue"
 
 Vue.use(Router);
