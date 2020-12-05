@@ -39,6 +39,16 @@
                 </template>
             </v-img>
             </v-col>
+            <v-snackbar
+                v-model="hasSaved"
+                :timeout="2000"
+                absolute
+                bottom
+                left
+                :color="typeAlert"
+                >
+                {{ messageAlert }}
+            </v-snackbar>
         </v-row>
 
         <div :class="{containerButtonAdd: !imagesGalery[0]}">
@@ -73,7 +83,10 @@ export default {
     data(){
         return{
             imagesGalery: [],
-            idImage: null
+            idImage: null,
+            hasSaved :false,
+            messageAlert: '',
+            typeAlert: ''
         }
     },
     methods:{
@@ -84,13 +97,19 @@ export default {
             uploadImage(file, `image-${this.idImage}`)
                 .then(()=>{
                     this.updateImage()
+                    this.showAlertMessage(true, 'success', 'Imagem salva com sucesso!!')
                 })
+                .catch(()=>
+                    this.showAlertMessage(
+                        true, "error", "Erro ao salvar, tente novamente mais tarde!"
+                    ))
         },
          updateImage(){
              downloadImage(`page-body/galery/image-${this.idImage}`)
                 .then(urlImage => {
                 this.pushInImagesGalery(urlImage)
                 })
+            this.hasSaved = true
         },
         async pushInImagesGalery(newUrl){
             this.imagesGalery.push({image: newUrl, id: this.idImage})
@@ -100,6 +119,13 @@ export default {
             this.imagesGalery.splice(indexImage, 1)
             update(this.imagesGalery)
             await deletePhotoStorage(idImageSelected)
+            this.showAlertMessage(true, 'success', 'Imagem deletada com sucesso!!')
+
+        },
+        showAlertMessage(hasSaved, typeAlert, messageAlert){
+            this.hasSaved = hasSaved;
+            this.typeAlert = typeAlert;
+            this.messageAlert = messageAlert
         }
     },
     async created(){

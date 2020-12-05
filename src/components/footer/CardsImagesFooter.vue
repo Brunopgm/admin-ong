@@ -17,7 +17,7 @@
     
     <v-card-title>
       <a :href="url || ''" class="title-url">
-          URL
+          Ir para url
           <v-icon>mdi-link-variant</v-icon>
       </a>
     </v-card-title>

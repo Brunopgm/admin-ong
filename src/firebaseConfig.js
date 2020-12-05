@@ -11,8 +11,6 @@ const firebaseConfig = {
     measurementId: "G-W1W35Y9GCR"
   };
 
-console.log(process.env.VUE_APP_APIKEY);
-
 const FirebaseApp = firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();
 

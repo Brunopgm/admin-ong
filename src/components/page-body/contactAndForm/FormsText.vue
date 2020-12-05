@@ -84,14 +84,12 @@ export default {
     methods: {
         save () {
             this.isEditing = !this.isEditing
-            this.hasSaved = true
             this.uploadContactData(this.readFormText)
         },
         fileSelected(file){
           const nameFile = `imagem-modal.jpeg`
           uploadFile(file.target.files[0], nameFile)
             .then(()=>{
-              console.log('Tudo ok');
               this.updateFile(nameFile)
             })
             .catch(()=>{
