@@ -13,19 +13,19 @@
                 :indexItem='indexItem'
                 />
         </div>
-        <galeryImages/>
+        <imagesGalery/>
     </div>
 </template>
 
 <script>
 import { read } from '@/services/foundation/page-body/galery/banner'
 import banner from './Banner'
-import galeryImages from './GaleryImages'
+import imagesGalery from './ImagesGalery'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapGetters } = createNamespacedHelpers('banner')
 export default {
-    components: {banner, galeryImages},
+    components: {banner, imagesGalery},
     computed:{
         ...mapGetters({bannerFields:'readBannerFields'})
     },
