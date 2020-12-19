@@ -2,16 +2,41 @@
     <div class="page-content">
         <h1>Projetos e ações</h1>
         <p>Personalize o rodapé modificando os links e as imagens dos icones de redes sociais e logo.</p>
-        <projectsCards/>
-
+        
+        <template>
+            <v-tabs>
+                <v-tab @click="component = 'lastProjects'">últimos</v-tab>
+                <v-tab @click="component = 'ongoingProjects'">Em andamento</v-tab>
+            </v-tabs>
+        </template>
+        <component :is="component"/>
         
     </div>
 </template>
 
 <script>
-import projectsCards from './ProjectsCards'
+import lastProjects from './LastProjects'
+import ongoingProjects from './OngoingProjects'
+import { read } from '@/services/foundation/page-body/projects'
+
+
+import { createNamespacedHelpers } from 'vuex'
+const { mapActions } = createNamespacedHelpers('projects') 
 export default {
-    components: {projectsCards}
+    components: {lastProjects, ongoingProjects},
+    data(){
+        return{
+            component: lastProjects
+        }
+    },
+    methods:{
+        ...mapActions(['changeAllProjects', ])
+    },
+    async created(){
+        const response = await read()
+        this.lastProjects = response
+        this.changeAllProjects(response)
+    }
 }
 </script>
 

@@ -52,7 +52,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .container-collaborators-with-slide{
       display: none;
     }
