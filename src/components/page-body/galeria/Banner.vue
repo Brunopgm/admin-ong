@@ -6,24 +6,21 @@
         :loading='showLoading'
         > 
             <div class="container-image" :style="imageCard">
-            <v-file-input
-                label="File input"
-                hide-input
-                prepend-icon="mdi-camera"
-                dark
-                class="logo-image"
-                @change="fileSelected"
-
-            ></v-file-input>
+                <v-file-input
+                    hide-input
+                    prepend-icon="mdi-camera"
+                    dark
+                    class="logo-image"
+                    @change="fileSelected"
+                ></v-file-input>
             </div>
             
             <v-card-title>
-            <h4>{{ title }}</h4>
-            
+                <h4>{{ title }}</h4>
             </v-card-title>
 
             <v-card-subtitle class="text-subtitle">
-            {{ text || 'Essa imagem não possui texto'}}
+                {{ text || 'Essa imagem não possui texto'}}
             </v-card-subtitle>
 
             <v-row justify="center">
@@ -32,30 +29,16 @@
                 persistent
                 max-width="600px"
             >
-                <template v-slot:activator="{ on, attrs }" class="container-buttons-card">
-                <v-btn
-                    color="primary"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    class="mb-2 mr-2"
-                >
-                    Descrição
-                </v-btn>
-                
-                <v-btn
-                    color="primary"
-                    dark
-                    class="mb-2 mr-2"
-                >
-                    <label 
-                    for="input-image" 
-                    id="input-image-label">Imagem
-                    <v-icon small>mdi-camera</v-icon>
-                    </label>
-                    <input @change="fileSelected" name="input-image" type="file" id="input-image"> 
-                </v-btn>
-            
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        color="primary"
+                        dark
+                        v-bind="attrs"
+                        v-on="on"
+                        class="mb-2"
+                    >
+                        Descrição
+                    </v-btn>
                 </template>
             
                 <v-card>
@@ -64,7 +47,7 @@
                 </v-card-title>
                 
                 <v-card-text>
-                <p>{{ text }}</p>
+                <p class="black--text">{{ text }}</p>
                     <v-container>
                     <v-row>
                         <v-text-field
@@ -96,15 +79,26 @@
                 </v-card>
             </v-dialog>
         </v-row>
+            <v-snackbar
+                v-model="hasSaved"
+                absolute
+                bottom
+                left
+                :color="typeAlert"
+                >
+                {{ messageAlert }}
+            </v-snackbar>
         </v-card>
     </div>
 </template>
     
 <script>
+import alertMessages from '@/components/mixins/alertMessages'
 import { uploadFile, downloadFile, update } from '@/services/foundation/page-body/galery/banner'
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapGetters } = createNamespacedHelpers('banner')
 export default {
+    mixins:[alertMessages],
     props:{
         title: { type : String }, 
         image: { type : String }, 
@@ -119,8 +113,12 @@ export default {
             image:'',
             text: ''
           },
-          showImage: true,
-          showLoading: false
+        currentIndexItem: '',
+        showImage: true,
+        showLoading: false,
+        hasSaved :false,
+        messageAlert: '',
+        typeAlert: ''
       }
     },
     computed:{
@@ -135,37 +133,44 @@ export default {
     },
     methods:{
         ...mapActions(['changeBannerFields']),
-      save(){
-        this.dialog = false
-        this.pushUrlInList(this.editedItem)
-      },
-      fileSelected(event){
-          this.showLoading = true
-          const file = event.target ? event.target.files[0] : event 
-          uploadFile(file, `${this.title}`)
-            .then(()=>{
-              this.updateFile()
-            }).catch(()=>{
-              this.showLoading = false
-            })
-      },
-      pushUrlInList(newItem){
-        const currentListUrlImage = this.bannerFields
-        newItem.text ? 
-        currentListUrlImage[this.indexItem].text = newItem.text: 
-        currentListUrlImage[this.indexItem].image = newItem;
-        this.changeBannerFields(currentListUrlImage)
-        this.updateBannerFields()
-      },
-      async updateFile(){
-        await downloadFile(`page-body/galery/banner/${this.title}`)
-            .then(urlImage => {
-            this.pushUrlInList(urlImage)
-            })
-      },
-      async updateBannerFields(){
+        save(){
+            this.dialog = false
+            this.pushDescriptionInList(this.editedItem)
+        },
+        fileSelected(event){
+            this.showLoading = true
+            const file = event.target ? event.target.files[0] : event 
+            this.showAlertMessage(true, 'success', 'Imagem adicionada com sucesso!!')
+            uploadFile(file, `${this.title}`)
+                .then(()=>{
+                    this.updateFile()
+                }).catch(()=>{
+                    this.showAlertMessage(true, 'error', 'Erro ao adicionar imagem!!')
+                    this.showLoading = false  
+                })
+        },
+        pushDescriptionInList(newItem){
+            const currentListUrlImage = this.bannerFields
+            newItem.text ? 
+            currentListUrlImage[this.indexItem].text = newItem.text: 
+            currentListUrlImage[this.indexItem].image = newItem;
+            this.changeBannerFields(currentListUrlImage)
+            this.updateBannerFields()
+        },
+        async updateFile(){
+            await downloadFile(`page-body/galery/banner/${this.title}`)
+                .then(urlImage => {
+                    this.pushDescriptionInList(urlImage)
+                })
+        },
+        async updateBannerFields(){
             await update(this.bannerFields)
-      }
+                .then(()=>{
+                    this.showAlertMessage(true, 'success', 'Descrição salva com sucesso!!')    
+                })
+                .catch(()=>
+                    this.showAlertMessage(true, 'error', 'Erro ao adicionar descrição!!'))
+        }
     }
 }
 </script>
@@ -192,10 +197,10 @@ export default {
         margin: 0 auto;
     }
 
-    #input-image{
+    .input-image{
       display: none;
     }
-   
+    
     #input-image-label{
       cursor: pointer;
     }
@@ -206,4 +211,5 @@ export default {
       text-overflow: ellipsis;
       width: 100%
     }
+
 </style>

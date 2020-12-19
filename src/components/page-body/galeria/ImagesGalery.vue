@@ -2,7 +2,6 @@
     <div>
         <h3>Galeria de fotos</h3>
         <p>Altere as fotos da galeria do site.</p>
-
         <v-row>
             <v-col
             v-for="(image, indexImage) in imagesGalery"
@@ -26,30 +25,30 @@
                 </v-icon>
             
                 <template v-slot:placeholder>
-                <v-row
-                    class="fill-height ma-0"
-                    align="center"
-                    justify="center"
-                >
-                    <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                    ></v-progress-circular>
-                </v-row>
+                    <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                    >
+                        <v-progress-circular
+                        indeterminate
+                        color="grey lighten-5"
+                        ></v-progress-circular>
+                    </v-row>
                 </template>
             </v-img>
             </v-col>
-            <v-snackbar
-                v-model="hasSaved"
-                :timeout="2000"
-                absolute
-                bottom
-                left
-                :color="typeAlert"
-                >
-                {{ messageAlert }}
-            </v-snackbar>
         </v-row>
+        <v-snackbar
+            v-model="hasSaved"
+            :timeout="2000"
+            absolute
+            bottom
+            left        
+            :color="typeAlert"
+            >
+            {{ messageAlert }}
+        </v-snackbar>
 
         <div :class="{containerButtonAdd: !imagesGalery[0]}">
             <v-btn
@@ -76,10 +75,12 @@
 </template>
 
 <script>
+import alertMessages from '@/components/mixins/alertMessages'
 import 
     {read, uploadImage, downloadImage, update, deletePhotoStorage} 
     from '@/services/foundation/page-body/galery/imagesGalery'
 export default {
+    mixins:[alertMessages],
     data(){
         return{
             imagesGalery: [],
@@ -120,12 +121,6 @@ export default {
             update(this.imagesGalery)
             await deletePhotoStorage(idImageSelected)
             this.showAlertMessage(true, 'success', 'Imagem deletada com sucesso!!')
-
-        },
-        showAlertMessage(hasSaved, typeAlert, messageAlert){
-            this.hasSaved = hasSaved;
-            this.typeAlert = typeAlert;
-            this.messageAlert = messageAlert
         }
     },
     async created(){
@@ -157,5 +152,6 @@ export default {
     .icon-add{
       cursor: pointer;
     }
+    
 
 </style>

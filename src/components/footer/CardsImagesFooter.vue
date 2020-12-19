@@ -42,20 +42,7 @@
           >
             Alterar URL
           </v-btn>
-          
-          <v-btn
-            color="primary"
-            dark
-            class="mb-2 mr-2"
-          >
-            <label 
-              for="input-image" 
-              id="input-image-label">Imagem
-            <v-icon small>mdi-camera</v-icon>
-            </label>
-            <input @change="fileSelected" name="input-image" type="file" id="input-image"> 
-          </v-btn>
-      
+        
         </template>
       
         <v-card>
@@ -185,15 +172,6 @@ export default {
         height: 100%;
         margin: 0 auto;
     }
-
-    #input-image{
-      display: none;
-    }
-   
-    #input-image-label{
-      cursor: pointer;
-    }
-    
     .title-url{
       text-decoration: none;    
       padding-bottom: 0.8rem;
