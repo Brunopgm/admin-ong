@@ -1,7 +1,8 @@
 <template>
     <div class="page-content">
         <h1>Galeria</h1>
-        <p>Modifique as imagens presentes nos banner, galeria do site e vídeos.</p>
+        <h3>Banner</h3>
+        <p>Modifique as imagens presentes nos banner.</p>
         <div class="container-card">
             <banner
                 v-for="(field,indexItem) in bannerFields"
@@ -12,17 +13,19 @@
                 :indexItem='indexItem'
                 />
         </div>
+        <galeryImages/>
     </div>
 </template>
 
 <script>
 import { read } from '@/services/foundation/page-body/galery/banner'
 import banner from './Banner'
+import galeryImages from './GaleryImages'
 
 import { createNamespacedHelpers } from 'vuex'
 const { mapActions, mapGetters } = createNamespacedHelpers('banner')
 export default {
-    components: {banner},
+    components: {banner, galeryImages},
     computed:{
         ...mapGetters({bannerFields:'readBannerFields'})
     },

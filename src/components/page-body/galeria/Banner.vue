@@ -68,7 +68,7 @@
                     <v-container>
                     <v-row>
                         <v-text-field
-                            label="Digite o novo subtitulo"
+                            label="Digite o novo texto"
                             required
                             v-model="editedItem.text"
                         ></v-text-field>
@@ -81,7 +81,7 @@
                     <v-btn
                     color="blue darken-1"
                     text
-                    @click="[dialog = false, this.editedItem.text = '']"
+                    @click="[dialog = false, editedItem.text = '']"
                     >
                     Fechar
                     </v-btn>
