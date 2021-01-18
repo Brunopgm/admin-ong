@@ -28,3 +28,9 @@ export const downloadFile = (path) => {
     return storageReference.child(path).getDownloadURL()
         .then(url =>url)
 }
+
+export const deleteImage = async(stateProject, nameFile) => {
+    const referenceFile = storageReference.child(`page-body/projects/${stateProject}/${nameFile}`)
+    return await referenceFile.delete()
+}
+

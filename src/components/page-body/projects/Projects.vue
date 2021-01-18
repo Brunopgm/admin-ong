@@ -1,7 +1,7 @@
 <template>
     <div class="page-content">
         <h1>Projetos e ações</h1>
-        <p>Personalize o rodapé modificando os links e as imagens dos icones de redes sociais e logo.</p>
+        <p>Adicione projetos que estão em andamento e/ou aqueles que já foram finalizados :)</p>
         
         <template>
             <v-tabs>
@@ -10,7 +10,6 @@
             </v-tabs>
         </template>
         <component :is="component"/>
-        
     </div>
 </template>
 

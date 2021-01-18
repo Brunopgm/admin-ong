@@ -72,7 +72,10 @@
                                     <v-icon class="mr-1">mdi-content-save</v-icon>
                                     Salvar
                                 </v-btn>
-                                <v-btn text>
+                                <v-btn 
+                                    text
+                                    @click="deleteProject(indexItem, projeto.id)"
+                                    >
                                     <v-icon class="mr-1">mdi-trash-can</v-icon>
                                     Excluir
                                 </v-btn>
@@ -103,12 +106,21 @@
                 {{ messageAlert }}
             </v-snackbar>
         </v-card>
+
+        <v-btn
+          elevation="2"
+          fab  
+          class="info mb-5"
+          @click="addNewProject"
+        >
+            <v-icon>mdi-plus</v-icon>
+        </v-btn>
     </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { uploadFile, downloadFile, update} from '@/services/foundation/page-body/projects'
+import { uploadFile, downloadFile, update, deleteImage} from '@/services/foundation/page-body/projects'
 import alertMessages from '@/components/mixins/alertMessages'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('projects')
@@ -125,15 +137,26 @@ export default {
             currentProjectIndex: null,
             hasSaved :false,
             messageAlert: '',
-            typeAlert: ''
+            typeAlert: '',
+            newProject: {
+                titleProject: 'Digite o título do novo projeto',
+                text: 'Fale sobre o projeto',
+                image: '',
+                featured: false,
+                id: null
+            }
         }
     },
     computed:{
         ...mapGetters({allProjects:'readAllProjects'})
     },
     methods:{
+        addNewProject(){
+            const idNewProject = this.projetos[this.projetos.length - 1].id + 1
+            this.newProject.id = idNewProject
+            this.projetos.push(this.newProject)
+        },
         async saveProject(){
-            
             await update(this.allProjects)
                 .then(()=>{
                     this.showAlertMessage(true, 'success', 'Projeto atualizado com sucesso!!')
@@ -165,8 +188,18 @@ export default {
             return this.currentProjectIndex === indexItem
         },
         getIdAndIndexOfProject(idProject, indexProject){
+            console.log(idProject);
             this.currentProjectId = idProject
             this.currentProjectIndex = indexProject
+        },
+        deleteProject(indexProject, idProject){
+            this.checkIfHasImage(indexProject, idProject)
+            this.projetos.splice(indexProject, 1)
+            update(this.allProjects)             
+        },
+        checkIfHasImage(indexProject, idProject){
+            this.projetos[indexProject].image ? 
+                deleteImage(this.stateProject, `project-${idProject}`): ''
         }
     }
 }
@@ -174,9 +207,10 @@ export default {
 
 <style>
     .image-card{
-        max-width: 100%;
+        width: 100%;
         height:180px;
         border-radius: 10px !important;
+        background:gray;
     }
     .container-project-text{
         width: 100%;
