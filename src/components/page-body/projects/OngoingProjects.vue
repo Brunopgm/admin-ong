@@ -1,12 +1,8 @@
 <template>
     <div>
         <projectsCards
-            v-for="project in projects"
-            :key="project.title"
-            :image='project.image'
-            :title='project.title'
-            :text='project.text'
-            :featured='project.featured'
+            :projetos='projects'
+            :stateProject='stateProject'
         />
     </div>
 </template>
@@ -21,7 +17,9 @@ export default {
     computed:{
         ...mapGetters({projects:'readOngoingProjects'})
     },
-    
+    data:()=>({
+        stateProject: 'ongoingProject'
+    })    
 }
 </script>
 

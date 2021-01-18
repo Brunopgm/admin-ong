@@ -126,7 +126,7 @@ export default {
       },
       fileSelected(event){
           this.showLoading = true
-          const file = event.target ? event.target.files[0] : event 
+          const file = event 
           uploadFile(file, `logo-${this.indexItem + 1}`)
             .then(()=>{
               this.updateFile()

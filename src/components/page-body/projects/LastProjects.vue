@@ -1,13 +1,12 @@
 <template>
     <div>
         <projectsCards
-            v-for="project in projects"
-            :key="project.title"
-            :image='project.image'
-            :title='project.title'
-            :text='project.text'
-            :featured='project.featured'
+            :projetos='projects'
+            :stateProject='stateProject'
         />
+        <div :class="{containerButtonAdd: !projects}">
+            <h3 v-if="!projects">Adicione o seu primeiro colaborador! :)</h3>
+        </div>
     </div>
 </template>
 
@@ -21,6 +20,11 @@ export default {
     components:{projectsCards},
     computed:{
         ...mapGetters({projects:'readLastProjects'})
+    },
+    data(){
+        return{
+            stateProject: 'lastProjects'
+        }
     }
 }
 </script>
