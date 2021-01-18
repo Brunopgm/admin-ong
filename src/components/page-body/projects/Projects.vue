@@ -34,8 +34,8 @@ export default {
     },
     async created(){
         const response = await read()
-        this.lastProjects = response
-        this.changeAllProjects(response)
+        const allProjects = response.allProjects
+        this.changeAllProjects(allProjects)
     }
 }
 </script>

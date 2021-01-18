@@ -11,8 +11,8 @@ export const read = async () => {
     return fields
 }
 
-export const update = async (banner) => {
-    await FirebaseApp.db.collection("foundation").doc('projects/lastProject').set({banner})
+export const update = async (allProjects) => {
+    await FirebaseApp.db.collection("foundation").doc('projects').set({allProjects})
         .then(response => {
         response
     })
