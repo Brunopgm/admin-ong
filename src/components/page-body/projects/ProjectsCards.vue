@@ -4,12 +4,26 @@
             max-width="100%"
             outlined
             class="pa-4 mb-3 rounded-lg"
+            v-for="(projeto, indexItem) in projetos"
+            :key="projeto.title"
         >
             <div class="content-card">
                 <v-img            
-                    :src="image"
+                    :src="projeto.image"
                     class="image-card"
-                ></v-img>
+                >
+                    <v-file-input
+                        hide-input
+                        prepend-icon="mdi-camera"
+                        dark
+                        class="logo-image"
+                        @click="
+                            currentProjectId = projeto.id
+                            currentProjectIndex = indexItem
+                            "
+                        @change="fileProjectSelected"
+                    ></v-file-input>
+                </v-img>
             
                 <div class="container-project-text">
                     <div
@@ -17,43 +31,45 @@
                     >
                         <v-btn
                             icon
-                            color="pink"
+                            :color="projeto.featured ? 'pink':'none'"
+                            @click="projeto.featured = !projeto.featured"
                         >
                             <v-icon>mdi-star</v-icon>
                         </v-btn>
                     </div>
-                    <h3 class="text-justify">{{ title }}</h3>
-                    <p class="project-text">{{ text }}</p>
+                    
+                    <h3 class="project-text">
+                        <input 
+                            type="text"
+                            class="text-justify pa-1"
+                            name="project-title"
+                            v-model="projeto.titleProject" 
+                        >
+                    </h3>
+                    <p class="project-text">
+                        <textarea 
+                            class="text-justify pa-1"
+                            name="project-text"
+                            v-model="projeto.text" 
+                            cols="30" 
+                            rows="6"
+                        ></textarea>
+                    </p>
                 </div>
             </div>
          
             <v-divider class="my-4"></v-divider>
-            
-            
-            
             <div>
 
                 <v-row justify="center">
-                    <v-dialog
-                        v-model="dialog"
-                        persistent
-                        max-width="800px"
-                    >
-                        <template v-slot:activator="{ on, attrs }" class="container-buttons-card">
-            
+                    
                         <div class="container-buttons">
                             <div class="buttons-edit">
-                                <v-btn
-                                    v-bind="attrs"
-                                    v-on="on" 
-                                    text
-                                >
-                                    <v-icon class="mr-1">mdi-pencil</v-icon>
-                                    Editar
+                                <v-btn text>
+                                    <v-icon class="mr-1">mdi-content-save</v-icon>
+                                    Salvar
                                 </v-btn>
-                                <v-btn 
-                                    text
-                                >
+                                <v-btn text>
                                     <v-icon class="mr-1">mdi-trash-can</v-icon>
                                     Excluir
                                 </v-btn>
@@ -64,94 +80,78 @@
                             >
                                 <v-btn
                                     icon
-                                    color="pink"
+                                    :color="projeto.featured ? 'pink':'none'"
+                                    @click="projeto.featured = !projeto.featured"
                                 >
                                     <v-icon>mdi-star</v-icon>
                                 </v-btn>
                             </div>
                         </div>
-                    
-                    
-                        </template>
-                    
-                        <v-card>
-                            <v-card-title>
-                                <span>Modifique o projeto</span>
-                            </v-card-title>
-                        
-                            <v-divider class="mb-4"></v-divider>
-
-                            <div class="container-image-modal">
-                                <v-img
-                                    class="mb-4 rounded"
-                                    max-height="500px"
-                                    max-width="100%"
-                                    :src="image"
-                                ></v-img>
-                            </div>
-
-                            <v-card-text>
-                                <v-container>
-                                    <p>Título</p>
-                                    <v-text-field
-                                        outlined
-                                        dense
-                                        required
-                                        v-model="title"
-                                    ></v-text-field>
-
-                                    <p>Digite aqui o texto do projeto</p>
-                                    <v-textarea
-                                        auto-grow
-                                        outlined
-                                        rows="5"
-                                        row-height="30"
-                                        required
-                                        v-model="text"
-                                    ></v-textarea>
-                            
-                                </v-container>
-                            </v-card-text>
-                        
-                            <v-divider class="mb-4"></v-divider>
-                            <v-card-actions class="container-buttons-modal">
-                                <v-spacer></v-spacer>
-
-                                <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="[dialog = false]"
-                                >
-                                Fechar
-                                </v-btn>
-                                <v-btn
-                                color="blue darken-1"
-                                text
-                                >
-                                Salvar
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
                 </v-row>
             </div>
-        
+            <v-snackbar
+                v-if="validatesProjectAlert(indexItem)"
+                v-model="hasSaved"
+                absolute
+                bottom
+                left
+                :color="typeAlert"
+                >
+                {{ messageAlert }}
+            </v-snackbar>
         </v-card>
-        
     </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
+import { uploadFile, downloadFile } from '@/services/foundation/page-body/projects'
+import alertMessages from '@/components/mixins/alertMessages'
+
+const { mapActions } = createNamespacedHelpers('projects')
 export default {
+    mixins:[alertMessages],
     props:{
-        image: {type: String},
-        title: {type: String},
-        text: {type: String},
-        featured: {type: Boolean}
+        projetos: {type: Array},
+        stateProject: {type: String}
     },
-    data: () => ({
-        dialog: false
-    })
+    data(){
+        return{
+            dialog: false,
+            currentProjectId: null,
+            currentProjectIndex: null,
+            hasSaved :false,
+            messageAlert: '',
+            typeAlert: ''
+        }
+    },
+    methods:{
+        ...mapActions(['changeDialog']),
+        fileProjectSelected(file){
+            this.showLoading = true
+            this.showAlertMessage(true, 'success', 'Imagem adicionada com sucesso!!')
+            uploadFile(file, `project-${this.currentProjectId}`, this.stateProject)
+                .then(()=>{
+                    this.updateFile()
+                }).catch(()=>{
+                    this.showAlertMessage(true, 'error', 'Erro ao adicionar imagem!!')
+                    this.showLoading = false  
+                })
+        },
+        async updateFile(){
+            await downloadFile(`page-body/projects/${this.stateProject}/project-${this.currentProjectId}`)
+                .then(urlImage => {
+                    this.pushUrlInListProjects(urlImage)
+                })
+        },
+        pushUrlInListProjects(newItem){
+            const currentListUrl = this.projetos
+            currentListUrl[this.currentProjectIndex].image = newItem
+        },
+        validatesProjectAlert(indexItem){
+            return this.currentProjectIndex === indexItem
+        }
+    }
 }
 </script>
 
@@ -162,15 +162,23 @@ export default {
         border-radius: 10px !important;
     }
     .container-project-text{
+        width: 100%;
         margin-top:10px;
     }
-    .project-text{
+    .project-text{ 
         display: -webkit-box;
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .project-text textarea, .project-text{ 
+        width: 100%;
+    }
+    .project-text p{ 
+        word-wrap: break-word;
+    }
+
     .container-buttons{
             width: 100%;
     }
@@ -186,6 +194,23 @@ export default {
         margin: 0 auto;
     }
     
+    ::-webkit-input-placeholder {
+        color: black;
+    }
+
+    :-moz-placeholder {
+        color: black;
+    }
+
+    ::-moz-placeholder {
+        color: black;  
+    }
+
+    :-ms-input-placeholder {  
+        color: black;  
+    }
+
+
 
     @media(min-width: 370px){
         .container-buttons{
