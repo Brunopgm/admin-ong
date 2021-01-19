@@ -4,12 +4,12 @@
             max-width="100%"
             outlined
             class="pa-4 mb-3 rounded-lg"
-            v-for="(projeto, indexItem) in projetos"
-            :key="projeto.title"
+            v-for="(project, indexItem) in projects"
+            :key="project.title"
         >
             <div class="content-card">
                 <v-img            
-                    :src="projeto.image"
+                    :src="project.image"
                     class="image-card"
                 >
                     <v-file-input
@@ -17,7 +17,7 @@
                         prepend-icon="mdi-camera"
                         dark
                         class="logo-image"
-                        @click="getIdAndIndexOfProject(projeto.id, indexItem)"
+                        @click="getIdAndIndexOfProject(project.id, indexItem)"
                         @change="fileProjectSelected"
                     ></v-file-input>
                 </v-img>
@@ -28,26 +28,26 @@
                     >
                         <v-btn
                             icon
-                            :color="projeto.featured ? 'pink':'none'"
-                            @click="projeto.featured = !projeto.featured"
+                            :color="project.featured ? 'pink':'none'"
+                            @click="project.featured = !project.featured"
                         >
                             <v-icon>mdi-star</v-icon>
                         </v-btn>
                     </div>
                     
-                    <h3 class="project-text">
+                    <h3 class="project-title">
                         <input 
                             type="text"
                             class="text-justify pa-1"
                             name="project-title"
-                            v-model="projeto.titleProject" 
+                            v-model="project.titleProject" 
                         >
                     </h3>
                     <p class="project-text">
                         <textarea 
                             class="text-justify pa-1"
                             name="project-text"
-                            v-model="projeto.text" 
+                            v-model="project.text" 
                             cols="30" 
                             rows="6"
                         ></textarea>
@@ -66,7 +66,7 @@
                                     text
                                     @click="[
                                         saveProject(),
-                                        getIdAndIndexOfProject(projeto.id, indexItem)
+                                        getIdAndIndexOfProject(project.id, indexItem)
                                         ]"
                                     >
                                     <v-icon class="mr-1">mdi-content-save</v-icon>
@@ -74,7 +74,7 @@
                                 </v-btn>
                                 <v-btn 
                                     text
-                                    @click="deleteProject(indexItem, projeto.id)"
+                                    @click="deleteProject(indexItem, project.id)"
                                     >
                                     <v-icon class="mr-1">mdi-trash-can</v-icon>
                                     Excluir
@@ -86,8 +86,8 @@
                             >
                                 <v-btn
                                     icon
-                                    :color="projeto.featured ? 'pink':'none'"
-                                    @click="projeto.featured = !projeto.featured"
+                                    :color="project.featured ? 'pink':'none'"
+                                    @click="project.featured = !project.featured"
                                 >
                                     <v-icon>mdi-star</v-icon>
                                 </v-btn>
@@ -127,7 +127,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers('projects')
 export default {
     mixins:[alertMessages],
     props:{
-        projetos: {type: Array},
+        projects: {type: Array},
         stateProject: {type: String}
     },
     data(){
@@ -152,9 +152,9 @@ export default {
     },
     methods:{
         addNewProject(){
-            const idNewProject = this.projetos[this.projetos.length - 1].id + 1
+            const idNewProject = this.projects[this.projects.length - 1].id + 1
             this.newProject.id = idNewProject
-            this.projetos.push(this.newProject)
+            this.projects.push(this.newProject)
         },
         async saveProject(){
             await update(this.allProjects)
@@ -181,24 +181,23 @@ export default {
                 })
         },
         pushUrlInListProjects(newItem){
-            const currentListUrl = this.projetos
+            const currentListUrl = this.projects
             currentListUrl[this.currentProjectIndex].image = newItem
         },
         validatesProjectAlert(indexItem){
             return this.currentProjectIndex === indexItem
         },
         getIdAndIndexOfProject(idProject, indexProject){
-            console.log(idProject);
             this.currentProjectId = idProject
             this.currentProjectIndex = indexProject
         },
         deleteProject(indexProject, idProject){
             this.checkIfHasImage(indexProject, idProject)
-            this.projetos.splice(indexProject, 1)
+            this.projects.splice(indexProject, 1)
             update(this.allProjects)             
         },
         checkIfHasImage(indexProject, idProject){
-            this.projetos[indexProject].image ? 
+            this.projects[indexProject].image ? 
                 deleteImage(this.stateProject, `project-${idProject}`): ''
         }
     }
@@ -223,7 +222,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .project-text textarea, .project-text{ 
+    .project-text textarea, .project-title input{ 
         width: 100%;
     }
     .project-text p{ 

@@ -26,3 +26,10 @@ export const create = async (fields) => {
         response
     })  
 }
+
+export const update = async (fields) => {
+    await FirebaseApp.db.collection("foundation").doc('aboutInstitution').set({fields})
+        .then(response => {
+        response
+    })
+}
