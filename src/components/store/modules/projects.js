@@ -10,6 +10,9 @@ export default {
         },
         readOngoingProjects(state){
             return state.allProjects.ongoingProject
+        },
+        readAllProjects(state){
+            return state.allProjects
         }
     },
     actions:{

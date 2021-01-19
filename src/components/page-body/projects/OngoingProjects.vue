@@ -1,7 +1,7 @@
 <template>
     <div>
         <projectsCards
-            :projetos='projects'
+            :projects='projects'
             :stateProject='stateProject'
         />
     </div>

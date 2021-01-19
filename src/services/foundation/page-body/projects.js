@@ -11,8 +11,8 @@ export const read = async () => {
     return fields
 }
 
-export const update = async (banner) => {
-    await FirebaseApp.db.collection("foundation").doc('projects/lastProject').set({banner})
+export const update = async (allProjects) => {
+    await FirebaseApp.db.collection("foundation").doc('projects').set({allProjects})
         .then(response => {
         response
     })
@@ -28,3 +28,9 @@ export const downloadFile = (path) => {
     return storageReference.child(path).getDownloadURL()
         .then(url =>url)
 }
+
+export const deleteImage = async(stateProject, nameFile) => {
+    const referenceFile = storageReference.child(`page-body/projects/${stateProject}/${nameFile}`)
+    return await referenceFile.delete()
+}
+

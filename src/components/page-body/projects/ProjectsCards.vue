@@ -4,12 +4,12 @@
             max-width="100%"
             outlined
             class="pa-4 mb-3 rounded-lg"
-            v-for="(projeto, indexItem) in projetos"
-            :key="projeto.title"
+            v-for="(project, indexItem) in projects"
+            :key="project.title"
         >
             <div class="content-card">
                 <v-img            
-                    :src="projeto.image"
+                    :src="project.image"
                     class="image-card"
                 >
                     <v-file-input
@@ -17,10 +17,7 @@
                         prepend-icon="mdi-camera"
                         dark
                         class="logo-image"
-                        @click="
-                            currentProjectId = projeto.id
-                            currentProjectIndex = indexItem
-                            "
+                        @click="getIdAndIndexOfProject(project.id, indexItem)"
                         @change="fileProjectSelected"
                     ></v-file-input>
                 </v-img>
@@ -31,26 +28,26 @@
                     >
                         <v-btn
                             icon
-                            :color="projeto.featured ? 'pink':'none'"
-                            @click="projeto.featured = !projeto.featured"
+                            :color="project.featured ? 'pink':'none'"
+                            @click="project.featured = !project.featured"
                         >
                             <v-icon>mdi-star</v-icon>
                         </v-btn>
                     </div>
                     
-                    <h3 class="project-text">
+                    <h3 class="project-title">
                         <input 
                             type="text"
                             class="text-justify pa-1"
                             name="project-title"
-                            v-model="projeto.titleProject" 
+                            v-model="project.titleProject" 
                         >
                     </h3>
                     <p class="project-text">
                         <textarea 
                             class="text-justify pa-1"
                             name="project-text"
-                            v-model="projeto.text" 
+                            v-model="project.text" 
                             cols="30" 
                             rows="6"
                         ></textarea>
@@ -65,11 +62,20 @@
                     
                         <div class="container-buttons">
                             <div class="buttons-edit">
-                                <v-btn text>
+                                <v-btn 
+                                    text
+                                    @click="[
+                                        saveProject(),
+                                        getIdAndIndexOfProject(project.id, indexItem)
+                                        ]"
+                                    >
                                     <v-icon class="mr-1">mdi-content-save</v-icon>
                                     Salvar
                                 </v-btn>
-                                <v-btn text>
+                                <v-btn 
+                                    text
+                                    @click="deleteProject(indexItem, project.id)"
+                                    >
                                     <v-icon class="mr-1">mdi-trash-can</v-icon>
                                     Excluir
                                 </v-btn>
@@ -80,8 +86,8 @@
                             >
                                 <v-btn
                                     icon
-                                    :color="projeto.featured ? 'pink':'none'"
-                                    @click="projeto.featured = !projeto.featured"
+                                    :color="project.featured ? 'pink':'none'"
+                                    @click="project.featured = !project.featured"
                                 >
                                     <v-icon>mdi-star</v-icon>
                                 </v-btn>
@@ -100,19 +106,28 @@
                 {{ messageAlert }}
             </v-snackbar>
         </v-card>
+
+        <v-btn
+          elevation="2"
+          fab  
+          class="info mb-5"
+          @click="addNewProject"
+        >
+            <v-icon>mdi-plus</v-icon>
+        </v-btn>
     </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { uploadFile, downloadFile } from '@/services/foundation/page-body/projects'
+import { uploadFile, downloadFile, update, deleteImage} from '@/services/foundation/page-body/projects'
 import alertMessages from '@/components/mixins/alertMessages'
 
-const { mapActions } = createNamespacedHelpers('projects')
+const { mapGetters, mapActions } = createNamespacedHelpers('projects')
 export default {
     mixins:[alertMessages],
     props:{
-        projetos: {type: Array},
+        projects: {type: Array},
         stateProject: {type: String}
     },
     data(){
@@ -122,20 +137,41 @@ export default {
             currentProjectIndex: null,
             hasSaved :false,
             messageAlert: '',
-            typeAlert: ''
+            typeAlert: '',
+            newProject: {
+                titleProject: 'Digite o título do novo projeto',
+                text: 'Fale sobre o projeto',
+                image: '',
+                featured: false,
+                id: null
+            }
         }
     },
+    computed:{
+        ...mapGetters({allProjects:'readAllProjects'})
+    },
     methods:{
+        addNewProject(){
+            const idNewProject = this.projects[this.projects.length - 1].id + 1
+            this.newProject.id = idNewProject
+            this.projects.push(this.newProject)
+        },
+        async saveProject(){
+            await update(this.allProjects)
+                .then(()=>{
+                    this.showAlertMessage(true, 'success', 'Projeto atualizado com sucesso!!')
+                }).catch(()=>{
+                    this.showAlertMessage(true, 'error', 'Erro ao atualizar projeto!!')
+                })
+        },
         ...mapActions(['changeDialog']),
         fileProjectSelected(file){
-            this.showLoading = true
-            this.showAlertMessage(true, 'success', 'Imagem adicionada com sucesso!!')
             uploadFile(file, `project-${this.currentProjectId}`, this.stateProject)
                 .then(()=>{
+                    this.showAlertMessage(true, 'success', 'Imagem adicionada com sucesso!!')
                     this.updateFile()
                 }).catch(()=>{
                     this.showAlertMessage(true, 'error', 'Erro ao adicionar imagem!!')
-                    this.showLoading = false  
                 })
         },
         async updateFile(){
@@ -145,11 +181,24 @@ export default {
                 })
         },
         pushUrlInListProjects(newItem){
-            const currentListUrl = this.projetos
+            const currentListUrl = this.projects
             currentListUrl[this.currentProjectIndex].image = newItem
         },
         validatesProjectAlert(indexItem){
             return this.currentProjectIndex === indexItem
+        },
+        getIdAndIndexOfProject(idProject, indexProject){
+            this.currentProjectId = idProject
+            this.currentProjectIndex = indexProject
+        },
+        deleteProject(indexProject, idProject){
+            this.checkIfHasImage(indexProject, idProject)
+            this.projects.splice(indexProject, 1)
+            update(this.allProjects)             
+        },
+        checkIfHasImage(indexProject, idProject){
+            this.projects[indexProject].image ? 
+                deleteImage(this.stateProject, `project-${idProject}`): ''
         }
     }
 }
@@ -157,9 +206,10 @@ export default {
 
 <style>
     .image-card{
-        max-width: 100%;
+        width: 100%;
         height:180px;
         border-radius: 10px !important;
+        background:gray;
     }
     .container-project-text{
         width: 100%;
@@ -172,7 +222,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .project-text textarea, .project-text{ 
+    .project-text textarea, .project-title input{ 
         width: 100%;
     }
     .project-text p{ 
