@@ -1,6 +1,7 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Home from "@/components/Home.vue"
+import Login from '@/components/Login.vue'
 
 import Header from "@/components/header/Header.vue"
 import Footer from "@/components/footer/Footer.vue"
@@ -18,6 +19,11 @@ const router = new Router({
       path: "/",     
       name: "home",
       component: Home
+    },
+    {
+      path: "/login",     
+      name: "login",
+      component: Login
     },
     {
       path: "/cabecalho",     
