@@ -114,21 +114,35 @@
                         </v-dialog>
                 </v-row>
             </v-tabs>
+            <v-snackbar
+                v-model="hasSaved"
+                absolute
+                bottom
+                left
+                :color="typeAlert"
+                >
+                {{ messageAlert }}
+            </v-snackbar>
 
         </v-card>
     </div>
 </template>
 
 <script>
+    import alertMessages from '@/components/mixins/alertMessages'
     import { read, uploadFile, downloadFile, update } from '@/services/foundation/page-body/aboutInstitution'
     export default {
+        mixins:[alertMessages],
         data: () => ({
             dialog: false,
             windowSizeMobile: false,
             indexFieldCurrent:0,
             fields:null,
             fileSelected: null,
-            editField: null
+            editField: null,
+            hasSaved :false,
+            messageAlert: '',
+            typeAlert: '',
         }),
         mounted () {
             this.onResize()
@@ -139,10 +153,13 @@
                 this.saveImage()
                 this.fields[this.indexFieldCurrent] = this.editField
                 update(this.fields)
+                    .then(()=>this.showAlertMessage(true, 'success', 'Salvo com sucesso!!'))
+                    .catch(()=>this.showAlertMessage(true, 'error', 'Erro ao salvar!!'))
+
             },
             saveImage(){
                 const nameFile = `mission-image.jpeg`
-                uploadFile(this.fileSelected, nameFile)
+                this.fileSelected && uploadFile(this.fileSelected, nameFile)
                     .then(()=>{
                         this.updateFile(nameFile)
                     })

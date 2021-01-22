@@ -1,5 +1,4 @@
 <template>
-  
      <v-list
           dense
           nav
