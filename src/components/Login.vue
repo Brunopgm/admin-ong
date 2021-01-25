@@ -97,9 +97,6 @@
                             this.$router.push('/')
                             this.changeShowMenu(true)
                         })
-                        .catch(() => {
-                            alert('Não foi possível logar. Tente novamente mais tarde!')
-                        });
                 }else{
                     alert('Usuário ou senha incorreta'); 
                     return
@@ -111,7 +108,7 @@
 
 <style scoped>
     .container-form{
-        width: 600px;
+        width: 95%;
         margin: 0 auto;
     }
     .form .logo-ong{
@@ -120,11 +117,10 @@
         width: 130px;
     }
     
-
     .form{
-        margin-top: 30%;
+        margin-top: 10%;
         background: rgb(199, 199, 199);
-        padding: 2rem 2rem 0 2rem;
+        padding: 2rem 1rem 0 1rem;
     }
     .title-form{
         font-family: 'Roboto', sans-serif;
@@ -139,5 +135,22 @@
         display: block;
         right: 0px;
         margin: 1.3rem 0 0.9rem 0;
+    }
+
+    @media (min-width: 680px) {
+        .container-form{
+            width: 80%;
+            margin: 0 auto;
+        }
+        .form{
+            padding: 2rem 2rem 0 2rem;
+        }
+    }
+
+    @media (min-width: 880px) {
+        .container-form{
+            width: 60%;
+            margin: 0 auto;
+        }
     }
 </style>
