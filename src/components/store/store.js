@@ -6,6 +6,7 @@ import contactAndForm from './modules/contactAndForm'
 import collaborator from './modules/collaborator'
 import banner from './modules/banner'
 import projects from './modules/projects'
+import login from './modules/login'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         contactAndForm, 
         collaborator, 
         banner,
-        projects
+        projects,
+        login
     }
 })
