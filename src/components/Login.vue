@@ -97,9 +97,11 @@
                             this.$router.push('/')
                             this.changeShowMenu(true)
                         })
+                        .catch(()=>{
+                            alert('Senha ou usuário incorretos')
+                        })
                 }else{
-                    alert('Usuário ou senha incorreta'); 
-                    return
+                    alert('Preencha todos os campos'); 
                 }             
             }
         },

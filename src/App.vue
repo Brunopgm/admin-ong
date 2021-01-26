@@ -33,24 +33,20 @@
 import { createNamespacedHelpers } from 'vuex'
 import { signOutUser } from './services/foundation/login'
 import Menu from './components/Menu.vue';
-import FirebaseApp from "@/firebaseConfig"
+// import FirebaseApp from "@/firebaseConfig"
 
 const { mapGetters, mapActions } = createNamespacedHelpers('login')
 export default {
   data(){
     return{
-      drawer: null 
+      drawer: null
       }
   },
   components: {
-    Menu,
+    Menu
   },
   computed:{
-    ...mapGetters({showMenu:'readShowMenu'}),
-    usuario(){
-      const user = FirebaseApp.auth().currentUser
-      return user
-    }
+    ...mapGetters({showMenu:'readShowMenu'})
   },
   methods: {
     ...mapActions(['changeShowMenu']),
@@ -59,6 +55,9 @@ export default {
       this.changeShowMenu(false)
       this.$router.push('/login')
     }
+  },
+  created(){
+    window.location.pathname === '/login' ? this.changeShowMenu(false): this.changeShowMenu(true)
   }
 }
 </script>
