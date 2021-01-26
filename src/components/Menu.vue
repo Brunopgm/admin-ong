@@ -4,7 +4,7 @@
           nav
           width="307px"
           >
-          <v-list-item>
+          <v-list-item @click="goHome">
             <v-list-item-avatar>
               <img :src="logoUrl">
             </v-list-item-avatar>
@@ -81,6 +81,9 @@ import { downloadFile } from '@/services/foundation/header'
     methods:{
       goToLink(link){
         this.$router.push({name:link})
+      },
+      goHome(){
+        this.$router.push('/')
       }
     },
     async created(){
