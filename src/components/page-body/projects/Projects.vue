@@ -29,7 +29,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['changeAllProjects', ])
+        ...mapActions(['changeAllProjects'])
     },
     async created(){
         const response = await read()
