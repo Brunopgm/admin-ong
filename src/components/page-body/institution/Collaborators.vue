@@ -167,12 +167,12 @@
         this.editedCollaborator.id = this.collaborators[sizeArrayCollaborator - 1].id + 1
         if(this.editedCollaborator.name === '' || this.editedCollaborator.occupation === '') {
             alert('Campos não preenchidos')
+            return
           }else if(this.editedFile){ 
             const nameFileEdited = `collaborator-${this.editedCollaborator.id}`
             this.changeImage(nameFileEdited)
           } 
         this.addEditedCollaboratorInCollaborators()
-          
       },
       changeImage(nameFileEdited){
         uploadFile(this.editedFile, nameFileEdited)
