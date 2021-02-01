@@ -2,6 +2,7 @@
   "name": "ong",
   "version": "0.1.0",
   "private": true,
+  "main": "app.vue",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -15,6 +16,7 @@
     "firebase": "^7.15.5",
     "firebase-admin": "^8.13.0",
     "http2": "^3.3.7",
+    "node": "10.13.0",
     "vue": "^2.6.11",
     "vue-router": "^3.3.4",
     "vuelidate": "^0.7.6",
