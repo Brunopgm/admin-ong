@@ -17,7 +17,7 @@
     "firebase-admin": "^8.13.0",
     "http2": "^3.3.7",
     "node": "10.13.0",
-    "vue": "^2.6.11",
+    "vue": "^3.0.0",
     "vue-router": "^3.3.4",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.2.11",
